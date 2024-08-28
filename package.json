@@ -1,0 +1,22 @@
+{
+	"name": "we13d",
+	"version": "0.1.0",
+	"private": true,
+	"devDependencies": {
+		"google-closure-compiler": "*",
+		"grunt": "*",
+		"grunt-closure-tools": "*",
+		"grunt-contrib-clean": "*",
+		"grunt-contrib-concat": "*",
+		"grunt-contrib-copy": "*",
+		"grunt-contrib-watch": "*",
+		"grunt-develop": "*",
+		"grunt-http-server": "*",
+		"grunt-image": "*",
+		"matchdep": "*"
+	},
+	"dependencies": {
+		"advzip-bin": "^2.0.0",
+		"tweenjs": "^1.0.2"
+	}
+}

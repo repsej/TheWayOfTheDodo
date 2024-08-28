@@ -1,0 +1,31 @@
+TODO:
+ - Disable cheatkeys in release builds
+ - Mauritius in the background ??
+
+
+WONT:
+ - Time bonus should not be rounded off ??
+
+DONE:
+ - GET UNDER SIZE LIMIT 13312
+	currently at 13554 !
+	cleaned up savefile : 13481
+	trimmed tileset : 13565 !! NOTHING
+	yas - got under by reducing tileset to 16 colors
+ - Store hiscore (and show)
+ - Extra bonus for lives remaining
+ - Squark (parrot) sound when flapping !
+ - Make game over level and Throw a number 13 down on the player !
+ - Time out should only result in losing one life
+ - Try game over on time out ... 
+ - Make flapping easier
+ - Jumping w speed 0 does strange things
+ - Ensure landscape on mobile
+ - Ensure mobile tap works
+ - Only space on keyboard to jump
+ - After X seconds click to break WIN SCREEN
+ - Falling into air shoudl be no diff that jump ... 
+ - Remove "wisdom" texts ... too distracting and too much work ... im not a writer !
+ - Change "wisdom" to Dodo facts and game hints 
+ - Rearrange hud (all in upper bar ... text at bottom)
+ - Add victory rockets and pause when game is won
