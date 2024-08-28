@@ -180,22 +180,26 @@ function gameUpdate() {
 
 	// TODO: disable in release build
 
-	if (keyWasPressed("KeyG")) {
-		lives = 1;
-		player?.kill();
+	if (!IS_RELEASE) {
+		if (keyWasPressed("KeyG")) {
+			lives = 1;
+			player?.kill();
+		}
+
+		if (keyWasPressed("KeyW")) {
+			level = 13;
+			gameNextLevel();
+		}
+
+		if (keyWasPressed("KeyK")) player.kill();
+		if (keyWasPressed("KeyN")) gameNextLevel();
+		if (keyWasPressed("KeyT")) levelStartTime = time - TIME_MAX + 11;
 	}
 
-	if (keyWasPressed("KeyW")) {
-		level = 13;
-		gameNextLevel();
+	if (!IS_RELEASE || gameState == GameState.WON) {
+		if (keyWasPressed("PageUp")) gameSkipToLevel(++level);
+		if (keyWasPressed("PageDown")) gameSkipToLevel(--level);
 	}
-
-	if (keyWasPressed("KeyK")) player.kill();
-	if (keyWasPressed("KeyN")) gameNextLevel();
-	if (keyWasPressed("KeyT")) levelStartTime = time - TIME_MAX + 11;
-
-	if (keyWasPressed("PageUp")) gameSkipToLevel(++level);
-	if (keyWasPressed("PageDown")) gameSkipToLevel(--level);
 }
 
 function gameUpdatePost() {}

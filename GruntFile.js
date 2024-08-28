@@ -169,18 +169,30 @@ module.exports = function (grunt) {
 		}
 		str += "]; \n";
 
-		str += "var IS_RELEASE = false;\n";
+		// str += "const IS_RELEASE = false;\n";
 
+		grunt.file.write("src/js/start_GEN.js", str);
+	});
+
+	grunt.registerTask("setIsRelease", "", function () {
+		let str = grunt.file.read("src/js/start_GEN.js");
+		str += "\nconst IS_RELEASE = true;\n";
+		grunt.file.write("src/js/start_GEN.js", str);
+	});
+
+	grunt.registerTask("setIsNotRelease", "", function () {
+		let str = grunt.file.read("src/js/start_GEN.js");
+		str += "\nconst IS_RELEASE = false;\n";
 		grunt.file.write("src/js/start_GEN.js", str);
 	});
 
 	grunt.registerTask("dev", ["watch"]);
 
-	grunt.registerTask("build", ["clean", "processMap", "concat:dev", "concat:shared", "image:dev"]);
+	grunt.registerTask("build", ["clean", "processMap", "setIsNotRelease", "concat:dev", "concat:shared", "image:dev"]);
 
 	grunt.registerTask("default", ["build", "http-server", "dev"]);
 
-	grunt.registerTask("prod", ["clean", "processMap", "image:prod", "concat:shared", "concat:prod"]);
+	grunt.registerTask("prod", ["clean", "processMap", "setIsRelease", "image:prod", "concat:shared", "concat:prod"]);
 
 	grunt.registerTask("web", ["http-server", "dev"]);
 };
