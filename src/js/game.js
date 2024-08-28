@@ -178,8 +178,6 @@ function gameUpdate() {
 			break;
 	}
 
-	// TODO: disable in release build
-
 	if (!IS_RELEASE) {
 		if (keyWasPressed("KeyG")) {
 			lives = 1;

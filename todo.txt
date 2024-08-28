@@ -1,12 +1,12 @@
 TODO:
- - Disable cheatkeys in release builds
  - Mauritius in the background ??
-
+ - Stop auto do flap after a wall hit / jump
 
 WONT:
  - Time bonus should not be rounded off ??
 
 DONE:
+ - Disable cheatkeys in release builds
  - GET UNDER SIZE LIMIT 13312
 	currently at 13554 !
 	cleaned up savefile : 13481
