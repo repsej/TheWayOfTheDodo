@@ -35,13 +35,10 @@ class Player extends EngineObject {
 	}
 
 	jump(offWall = false) {
-		// if (time - this.jumpTime < 0.1) return;
-		//sound_squark.play(this.pos);
-
+		this.doFlap = false;
 		this.jumpTime = time;
 
 		if (offWall) {
-			// sound_squark.play(this.pos, 0.01, 0.5);
 			this.velocity.x = sign(this.velocity.x) * this.forceWallJumpX;
 			this.velocity.y = this.forceJumpY / 1.5;
 		} else {
@@ -149,7 +146,7 @@ class Player extends EngineObject {
 					if (this.jumpButtonDown) this.jump(true);
 				}
 
-				let timeInAir = time - this.jumpTime;
+				let timeInJump = time - this.jumpTime;
 
 				if (this.jumpBreaked) {
 					if (abs(this.velocity.x) > 0.1) this.velocity.x *= 0.96;
@@ -166,7 +163,7 @@ class Player extends EngineObject {
 				}
 
 				// Glide / flap
-				if (timeInAir > 0.25) {
+				if (timeInJump > 0.25) {
 					if (this.jumpButtonPressed || this.doFlap) {
 						sound_squark.play(this.pos, rand(0.5, 1));
 
