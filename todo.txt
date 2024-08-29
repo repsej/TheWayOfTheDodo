@@ -1,11 +1,11 @@
 TODO:
  - Mauritius in the background ??
- - Reset time after death 
-
-WONT:
  - Time bonus should not be rounded off ??
+ - Stars gets too big in very small resolutions .. FUCK DAT
+
 
 DONE:
+ - Reset time after death 
  - Stop auto do flap after a wall hit / jump
  - Disable cheatkeys in release builds
  - GET UNDER SIZE LIMIT 13312

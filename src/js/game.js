@@ -162,7 +162,8 @@ function gameUpdate() {
 					gameSkipToLevel(++level);
 				}
 			} else {
-				timeBonus = TIME_MAX - (time - levelStartTime);
+				if (player) timeBonus = TIME_MAX - (time - levelStartTime);
+
 				if (timeBonus <= -1 && level != 0) {
 					player.kill(true);
 				}
@@ -240,7 +241,7 @@ function gameDrawHudText(
 ) {
 	let fontSize = overlayCanvas.width / 40;
 
-	fontSize = clamp(fontSize, 10, 25);
+	fontSize = clamp(fontSize, 10, 20);
 	fontSize *= sizeFactor;
 
 	let outlineWidth = fontSize / 10;
@@ -277,39 +278,13 @@ function gameRenderPost() {
 			//gameDrawHudText(levelTexts[level], overlayCanvas.width * 0.5, overlayCanvas.height - halfTile);
 
 			if (level == 0) {
-				// let titleTopPos = worldToScreen(vec2(levelSize.x / 2, levelSize.y * 0.85));
-				// let titleBottomPos = worldToScreen(vec2(levelSize.x / 2, levelSize.y * 0.65));
-
-				let subtitleTopPos = worldToScreen(vec2(levelSize.x / 2, levelSize.y * 0.5));
-				let subtitleBottomPos = worldToScreen(vec2(levelSize.x / 2, levelSize.y * 0.45));
-
 				if (savefileGetHiscore()) {
 					gameDrawHudText("Hiscore " + savefileGetHiscore(), overlayCanvas.width * 0.5, halfTile);
 				}
 
-				//const font = "Luminari";
-				//const font = "Tahoma";
-				const titleFont = "monospace";
-				//let titleColor = hsl(rand(), 1, 0.5).toString();
-				let titleColor = "#e7cb1b";
-
-				// The Way of the Dodo
-
-				// drawTile(
-				// 	vec2(0, 0),
-				// 	vec2(3, 2),
-				// 	spriteAtlas.title,
-				// 	undefined,
-				// 	undefined,
-				// 	undefined,
-				// 	undefined,
-				// 	undefined,
-				// 	undefined,
-				// 	overlayContext
-				// );
-
-				// gameDrawHudText("The Way of", titleTopPos.x, titleTopPos.y, titleSize, titleFont, titleColor);
-				// gameDrawHudText("the Dodo", titleBottomPos.x, titleBottomPos.y, titleSize, titleFont, titleColor);
+				let subtitleTopPos = worldToScreen(vec2(levelSize.x / 2, levelSize.y * 0.5));
+				let subtitleBottomPos = worldToScreen(vec2(levelSize.x / 2, levelSize.y * 0.45));
+				let subtitleColor = "#e0cc5b";
 
 				gameDrawHudText(
 					"Enter the Dodo Dojo",
@@ -317,7 +292,7 @@ function gameRenderPost() {
 					subtitleTopPos.y,
 					titleSize / 6,
 					undefined,
-					titleColor
+					subtitleColor
 				);
 
 				gameDrawHudText(
@@ -326,7 +301,7 @@ function gameRenderPost() {
 					subtitleBottomPos.y,
 					titleSize / 6,
 					undefined,
-					titleColor
+					subtitleColor
 				);
 			} else {
 				gameDrawHudText("Lives " + lives, (overlayCanvas.width * 1) / 4, halfTile);
@@ -374,13 +349,13 @@ function gameRenderPost() {
 
 			gameDrawHudText("Life bonus " + lives + " x " + LIVE_BONUS_SCORE, overlayCanvas.width / 2, halfTile * 3, 0.7);
 
+			gameDrawHudText("BE FREE BIRD !", overlayCanvas.width / 2, overlayCanvas.height * 0.85, 3);
+
 			if (gameIsNewHiscore) {
 				// blink
 				if ((time * 2) % 2 > 1) {
-					gameDrawHudText("NEW HISCORE", overlayCanvas.width / 2, overlayCanvas.height * 0.8, 3);
+					gameDrawHudText("NEW HISCORE", overlayCanvas.width / 2, overlayCanvas.height * 0.75, 3);
 				}
-			} else {
-				gameDrawHudText("YOU ARE A FREE BIRD !", overlayCanvas.width / 2, overlayCanvas.height * 0.8, 3);
 			}
 
 			if (!isTouchDevice) {

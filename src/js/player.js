@@ -304,7 +304,7 @@ class Player extends EngineObject {
 
 	collideWithTile(tile, pos) {
 		if (tile == tileType_spike) {
-			this.kill();
+			this.kill(true);
 		}
 
 		return true;
