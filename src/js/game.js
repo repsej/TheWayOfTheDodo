@@ -48,7 +48,7 @@ function gameInit() {
 	levelBuild(level);
 	musicInit(level);
 
-	title = new EngineObject(vec2(levelSize.x / 2, levelSize.y * 0.74), vec2(16, 8), spriteAtlas.title);
+	title = new EngineObject(vec2(levelSize.x / 2, levelSize.y * 0.7), vec2(20, 9), spriteAtlas.title);
 	title.setCollision(false, false, false);
 	title.gravityScale = 0;
 }
@@ -173,7 +173,7 @@ function gameUpdate() {
 				if (level == 0) {
 					//gameBottomText = levelTexts[level];
 					//gameBottomText = "Dodo Dojo: 13 chambers of fowl play";
-					gameBottomText = isTouchDevice ? "Tap to jump" : "Space to jump";
+					gameBottomText = isTouchDevice ? "[Tap to jump]" : "[Space to jump]";
 
 					timeBonus = 0;
 				} else {
@@ -282,8 +282,8 @@ function gameRenderPost() {
 					gameDrawHudText("Hiscore " + savefileGetHiscore(), overlayCanvas.width * 0.5, halfTile);
 				}
 
-				let subtitleTopPos = worldToScreen(vec2(levelSize.x / 2, levelSize.y * 0.5));
-				let subtitleBottomPos = worldToScreen(vec2(levelSize.x / 2, levelSize.y * 0.45));
+				let subtitleTopPos = worldToScreen(vec2(levelSize.x / 2, levelSize.y * 0.45));
+				let subtitleBottomPos = worldToScreen(vec2(levelSize.x / 2, levelSize.y * 0.4));
 				let subtitleColor = "#e0cc5b";
 
 				gameDrawHudText(
