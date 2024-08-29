@@ -135,7 +135,7 @@ class Player extends EngineObject {
 				if (timeSinceGround < EXTRA_JUMPTIME) {
 					if (this.jumpButtonPressed) this.jump();
 				} else {
-					// convert to a jump
+					// convert to being in a jump (can flap, etc)
 					this.jumpTime = time - EXTRA_JUMPTIME;
 				}
 			}
@@ -182,7 +182,7 @@ class Player extends EngineObject {
 						this.doFlap = false;
 					}
 				} else {
-					if (this.jumpButtonPressed) this.doFlap = true;
+					if (timeInJump > 0.1 && this.jumpButtonPressed) this.doFlap = true;
 				}
 			}
 		}
