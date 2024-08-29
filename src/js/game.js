@@ -20,6 +20,8 @@ let lives = undefined;
 let titleSize;
 var gameIsNewHiscore = false;
 
+let title;
+
 ///////////////////////////////////////////////////////////////////////////////
 function gameInit() {
 	// create a table of all sprites
@@ -30,6 +32,7 @@ function gameInit() {
 		playerJump: tile(4),
 		exit: tile(6),
 		concreteBlock: tile(9),
+		title: tile(vec2(48, 32), vec2(48, 32)),
 	};
 
 	// enable touch gamepad on touch devices
@@ -44,6 +47,10 @@ function gameInit() {
 
 	levelBuild(level);
 	musicInit(level);
+
+	title = new EngineObject(vec2(levelSize.x / 2, levelSize.y * 0.74), vec2(16, 8), spriteAtlas.title);
+	title.setCollision(false, false, false);
+	title.gravityScale = 0;
 }
 
 function gameSetState(newState) {
@@ -270,8 +277,8 @@ function gameRenderPost() {
 			//gameDrawHudText(levelTexts[level], overlayCanvas.width * 0.5, overlayCanvas.height - halfTile);
 
 			if (level == 0) {
-				let titleTopPos = worldToScreen(vec2(levelSize.x / 2, levelSize.y * 0.85));
-				let titleBottomPos = worldToScreen(vec2(levelSize.x / 2, levelSize.y * 0.65));
+				// let titleTopPos = worldToScreen(vec2(levelSize.x / 2, levelSize.y * 0.85));
+				// let titleBottomPos = worldToScreen(vec2(levelSize.x / 2, levelSize.y * 0.65));
 
 				let subtitleTopPos = worldToScreen(vec2(levelSize.x / 2, levelSize.y * 0.5));
 				let subtitleBottomPos = worldToScreen(vec2(levelSize.x / 2, levelSize.y * 0.45));
@@ -282,12 +289,27 @@ function gameRenderPost() {
 
 				//const font = "Luminari";
 				//const font = "Tahoma";
-				const titleFont = "Brush Script MT";
+				const titleFont = "monospace";
 				//let titleColor = hsl(rand(), 1, 0.5).toString();
 				let titleColor = "#e7cb1b";
 
-				gameDrawHudText("The Way of", titleTopPos.x, titleTopPos.y, titleSize, titleFont, titleColor);
-				gameDrawHudText("the Dodo", titleBottomPos.x, titleBottomPos.y, titleSize, titleFont, titleColor);
+				// The Way of the Dodo
+
+				// drawTile(
+				// 	vec2(0, 0),
+				// 	vec2(3, 2),
+				// 	spriteAtlas.title,
+				// 	undefined,
+				// 	undefined,
+				// 	undefined,
+				// 	undefined,
+				// 	undefined,
+				// 	undefined,
+				// 	overlayContext
+				// );
+
+				// gameDrawHudText("The Way of", titleTopPos.x, titleTopPos.y, titleSize, titleFont, titleColor);
+				// gameDrawHudText("the Dodo", titleBottomPos.x, titleBottomPos.y, titleSize, titleFont, titleColor);
 
 				gameDrawHudText(
 					"Enter the Dodo Dojo",

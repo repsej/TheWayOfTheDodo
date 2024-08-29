@@ -1,11 +1,12 @@
 TODO:
  - Mauritius in the background ??
- - Stop auto do flap after a wall hit / jump
+ - Reset time after death 
 
 WONT:
  - Time bonus should not be rounded off ??
 
 DONE:
+ - Stop auto do flap after a wall hit / jump
  - Disable cheatkeys in release builds
  - GET UNDER SIZE LIMIT 13312
 	currently at 13554 !
