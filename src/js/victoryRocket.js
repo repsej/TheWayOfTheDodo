@@ -100,7 +100,7 @@ class VictoryRocket extends EngineObject {
 				PI * 2, // emiteConeAngle
 				undefined, // tileIndex
 				Colors.white, // colorStartA
-				Colors.white, // colorStartB
+				explosionColor, // colorStartB
 				explosionColor, // colorEndA
 				explosionColor, // colorEndB
 				particleTime, // particleTime
@@ -150,6 +150,35 @@ class VictoryRocket extends EngineObject {
 			);
 
 			trails.trailScale = rand(5, 15);
+
+			let explosion = new ParticleEmitter(
+				screenToWorld(this.pos), // pos
+				0, // angle
+				0, // emitSize
+				0.1, // emitTime
+				200, // emitRate
+				PI * 2, // emiteConeAngle
+				undefined, // tileIndex
+				Colors.white, // colorStartA
+				Colors.white, // colorStartB
+				Colors.white, // colorEndA
+				Colors.white, // colorEndB
+				0.2, // particleTime
+				size, // sizeStart
+				0, // sizeEnd
+				0.001, // particleSpeed
+				0.1, // particleAngleSpeed
+				0.99, // damping
+				1, // angleDamping
+				0, // gravityScale
+				PI, // particleCone
+				0.9, //fadeRate,
+				0, // randomness
+				false, // collide
+				false, // additive
+				true, // randomColorLinear
+				this.renderOrder // renderOrder
+			);
 		}
 	}
 
