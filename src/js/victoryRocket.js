@@ -78,16 +78,18 @@ class VictoryRocket extends EngineObject {
 
 			//laterCall(() => DEFS.sounds.vitoryRocketExplode.play(undefined, 3 * size * size * size), rand(500, 1000));
 
-			let emitRate = size * 200;
-			let particleTime = size * 3;
-			let sizeStart = size * 0.15;
+			let emitRate = size * 100 * rand(0.5, 1.5);
+			let particleTime = size * 2 * rand(0.5, 1.5);
+			let sizeStart = size * 0.15 * rand(0.5, 1.5);
 			let sizeEnd = 0.0;
 			let particleSpeed = rand(0.08, 0.15) * size;
-			let particleAngleSpeed = rand(0.1, 0.3);
+			let particleAngleSpeed = rand(0.1, 0.5);
 			let fadeRate = rand(0.1, 0.2);
 			let randomness = rand(0.2, 0.5);
 			let damping = (9 + size / MAX_SIZE) / 10;
 			let dampingTrails = damping; // * 0.99;
+
+			let gravityScale = rand(0.01, 0.3);
 
 			let particles = new ParticleEmitter(
 				screenToWorld(this.pos), // pos
@@ -108,7 +110,7 @@ class VictoryRocket extends EngineObject {
 				particleAngleSpeed, // particleAngleSpeed
 				damping, // damping
 				1, // angleDamping
-				0.05, // gravityScale
+				gravityScale, // gravityScale
 				PI, // particleCone
 				fadeRate, //fadeRate,
 				randomness, // randomness
@@ -137,7 +139,7 @@ class VictoryRocket extends EngineObject {
 				particleAngleSpeed, // particleAngleSpeed
 				dampingTrails, // damping
 				1, // angleDamping
-				0.05, // gravityScale
+				gravityScale, // gravityScale
 				PI, // particleCone
 				fadeRate, //fadeRate,
 				randomness, // randomness
@@ -147,7 +149,7 @@ class VictoryRocket extends EngineObject {
 				this.renderOrder // renderOrder
 			);
 
-			trails.trailScale = 10;
+			trails.trailScale = rand(5, 15);
 		}
 	}
 
