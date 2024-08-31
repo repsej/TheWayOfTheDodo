@@ -48,6 +48,8 @@ function gameInit() {
 	levelBuild(level);
 	musicInit(level);
 
+	VictoryRocket.destroyAllLive();
+
 	title = new EngineObject(vec2(levelSize.x / 2, levelSize.y * 0.7), vec2(20, 9), spriteAtlas.title);
 	title.setCollision(false, false, false);
 	title.gravityScale = 0;

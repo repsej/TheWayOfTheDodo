@@ -29,7 +29,7 @@ class Sky extends EngineObject {
 
 		// draw stars
 		const random = new RandomGenerator(this.seed);
-		for (let i = Math.floor((mainCanvas.width * mainCanvas.height) / 1000); i--; ) {
+		for (let i = 100 + Math.floor((mainCanvas.width * mainCanvas.height) / 1500); i--; ) {
 			const size = random.float(0.5, 2) ** 2;
 			const speed = random.float() < 0.95 ? random.float(-3, 3) : random.float(-99, 99);
 			const color = hsl(random.float(-0.3, 0.2), random.float(), random.float());
@@ -37,7 +37,7 @@ class Sky extends EngineObject {
 			const w = mainCanvas.width + 2 * extraSpace,
 				h = mainCanvas.height + 2 * extraSpace;
 
-			let camMult = size;
+			let camMult = size * 3;
 
 			const screenPos = vec2(
 				mod(random.float(w) + time * speed - cameraPos.x * camMult, w) - extraSpace,
