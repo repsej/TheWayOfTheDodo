@@ -1,6 +1,8 @@
 /** @format */
 
-let spriteAtlas, score, level, transitionFrames, timeBonus;
+let spriteAtlas, score, level, transitionFrames, timeLeft;
+
+let bonusText, bonusAmmount;
 
 let GameState = {
 	PLAY: 0,
@@ -103,7 +105,11 @@ function gameNextLevel(now = false) {
 	musicOn = false;
 
 	gameBottomText = undefined;
-	if (Math.ceil(timeBonus) > 0) gameBottomText = "Time bonus " + Math.ceil(timeBonus) * TIME_BONUS_SCORE;
+
+	//gameBottomText = "Time bonus " + Math.ceil(timeLeft) * TIME_BONUS_SCORE;
+
+	bonusAmmount = Math.ceil((timeLeft + 1) * TIME_BONUS_SCORE);
+	bonusText = "Time bonus ";
 
 	transitionFrames = TRANSITION_FRAMES;
 }
@@ -136,14 +142,17 @@ function gameUpdate() {
 			if (transitionFrames > 0) {
 				let transProgress = (TRANSITION_FRAMES - transitionFrames) / TRANSITION_FRAMES;
 
-				// Time bonus
-				timeBonus = Math.ceil(timeBonus);
-
-				if (level > 0 && transProgress > 0.2) {
-					if (timeBonus > 0 && transitionFrames % 2 == 0) {
-						score += TIME_BONUS_SCORE;
-						timeBonus--;
-						sound_score.play();
+				// Bonus
+				if (level > 0 && transProgress > 0.3 && bonusAmmount > 0) {
+					if (transitionFrames % 2 == 0) {
+						if (bonusAmmount >= TIME_BONUS_SCORE) {
+							score += TIME_BONUS_SCORE;
+							bonusAmmount -= TIME_BONUS_SCORE;
+							sound_score.play();
+						} else {
+							score += bonusAmmount;
+							bonusAmmount = 0;
+						}
 					}
 				}
 
@@ -160,24 +169,24 @@ function gameUpdate() {
 
 				if (transitionFrames <= 0) {
 					if (level == 0) score = 0;
-
+					bonusText = undefined;
 					gameSkipToLevel(++level);
 				}
 			} else {
-				if (player) timeBonus = TIME_MAX - (time - levelStartTime);
+				if (player) timeLeft = TIME_MAX - (time - levelStartTime);
 
-				if (timeBonus <= -1 && level != 0) {
+				if (timeLeft <= -1 && level != 0) {
 					player.kill(true);
 				}
 
-				timeBonus = max(timeBonus, 0);
+				timeLeft = max(timeLeft, 0);
 
 				if (level == 0) {
 					//gameBottomText = levelTexts[level];
 					//gameBottomText = "Dodo Dojo: 13 chambers of fowl play";
 					gameBottomText = isTouchDevice ? "[Tap to jump]" : "[Space to jump]";
 
-					timeBonus = 0;
+					timeLeft = 0;
 				} else {
 					gameBottomText = "Chamber " + level + " of 13";
 					// if (levelTexts[level]) gameBottomText += ". " + levelTexts[level];
@@ -311,18 +320,20 @@ function gameRenderPost() {
 
 				let timeColor = "#fff";
 
-				if (timeBonus <= 10 && transitionFrames <= 0) {
+				if (timeLeft <= 10 && transitionFrames <= 0) {
 					if ((time * 4) % 2 < 1) timeColor = "#f00";
 				}
 
 				gameDrawHudText(
-					"Time " + Math.ceil(timeBonus),
+					"Time " + Math.ceil(timeLeft),
 					(overlayCanvas.width * 3) / 4,
 					halfTile,
 					undefined,
 					undefined,
 					timeColor
 				);
+
+				if (bonusText) gameDrawHudText(bonusText + bonusAmmount, overlayCanvas.width / 2, halfTile * 3, 0.7);
 			}
 
 			break;
