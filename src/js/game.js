@@ -339,7 +339,12 @@ function gameRenderPost() {
 			gameDrawHudText(scoreText, overlayCanvas.width / 2, halfTile);
 			if (gameIsNewHiscore && (time * 4) % 2 > 1) gameDrawHudText("NEW HISCORE", overlayCanvas.width / 2, halfTile * 3);
 
-			gameDrawHudText("See, 13 is dangerous !", overlayCanvas.width / 2, overlayCanvas.height - 3 * halfTile, 1);
+			gameDrawHudText(
+				"See, the number 13 really is dangerous !",
+				overlayCanvas.width / 2,
+				overlayCanvas.height - 3 * halfTile,
+				1
+			);
 
 			break;
 
