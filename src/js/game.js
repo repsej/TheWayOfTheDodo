@@ -131,7 +131,7 @@ function gameUpdate() {
 			break;
 
 		case GameState.GAME_OVER:
-			if (time - levelStartTime > 7) {
+			if (time - levelStartTime > 5) {
 				if (!gameBottomText) sound_exitAppear.play();
 				gameBottomText = "[Click to start new game]";
 				if (inputJumpReleased()) gameInit();
