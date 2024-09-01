@@ -39,6 +39,7 @@ function gameInit() {
 
 	// enable touch gamepad on touch devices
 	touchGamepadEnable = true;
+	gameIsNewHiscore = false;
 
 	transitionFrames = score = level = 0;
 	gravity = -0.01;
@@ -387,13 +388,14 @@ function gameBonusSet(text, ammount, initPause = 1) {
 	bonusGivenTime = time + initPause;
 }
 
+// Returns true on the frame it is done counting
 function gameBonusUpdate() {
-	if (time - bonusGivenTime < 0) return; // Intial pause
-
 	if (time - bonusGivenTime > 5) bonusText = undefined;
+	if (time - bonusGivenTime < 0) return false; // Intial pause
+	if (bonusAmmount <= 0) return false;
 
 	if (transitionFrames % 2 == 0) {
-		if (bonusAmmount >= TIME_BONUS_SCORE) {
+		if (bonusAmmount > TIME_BONUS_SCORE) {
 			score += TIME_BONUS_SCORE;
 			bonusAmmount -= TIME_BONUS_SCORE;
 			sound_score.play();
