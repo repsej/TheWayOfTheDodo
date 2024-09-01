@@ -78,12 +78,12 @@ function gameSetState(newState) {
 			musicOn = true;
 			levelStartTime = time;
 
-			gameBonusSet("Lives bonus ", lives * LIVE_BONUS_SCORE);
+			gameBonusSet("Lives bonus ", lives * LIVE_BONUS_SCORE, 3);
 
 			//gameBottomText = "Lives bonus " + lives * LIVE_BONUS_SCORE;
 			//score += lives * LIVE_BONUS_SCORE;
 
-			gameIsNewHiscore = savefileUpdateHiscore(score);
+			//gameIsNewHiscore = savefileUpdateHiscore(score);
 			break;
 
 		default:
@@ -116,11 +116,13 @@ function gameUpdate() {
 
 	switch (gameState) {
 		case GameState.WON:
-			gameBonusUpdate();
+			if (gameBonusUpdate()) {
+				gameIsNewHiscore = savefileUpdateHiscore(score);
+			}
 
 			VictoryRocket.spawnRandom();
 			cameraPos = cameraPos.lerp(player.pos, 0.05);
-			if (time - levelStartTime > 5) {
+			if (time - levelStartTime > 7) {
 				if (!gameBottomText) sound_exitAppear.play();
 				gameBottomText = "[Click to start new game]";
 				if (inputJumpReleased()) gameInit();
@@ -128,7 +130,7 @@ function gameUpdate() {
 			break;
 
 		case GameState.GAME_OVER:
-			if (time - levelStartTime > 5) {
+			if (time - levelStartTime > 7) {
 				if (!gameBottomText) sound_exitAppear.play();
 				gameBottomText = "[Click to start new game]";
 				if (inputJumpReleased()) gameInit();
@@ -379,14 +381,14 @@ function gameRenderPost() {
 
 // BONUS STUFF
 
-function gameBonusSet(text, ammount) {
+function gameBonusSet(text, ammount, initPause = 1) {
 	bonusText = text;
 	bonusAmmount = ammount;
-	bonusGivenTime = time;
+	bonusGivenTime = time + initPause;
 }
 
 function gameBonusUpdate() {
-	if (time - bonusGivenTime < 1) return; // Intial pause
+	if (time - bonusGivenTime < 0) return; // Intial pause
 
 	if (time - bonusGivenTime > 5) bonusText = undefined;
 
@@ -398,8 +400,11 @@ function gameBonusUpdate() {
 		} else {
 			score += bonusAmmount;
 			bonusAmmount = 0;
+			return true;
 		}
 	}
+
+	return false;
 }
 
 engineInit(gameInit, gameUpdate, gameUpdatePost, gameRender, gameRenderPost, ["tiles.png"]);
