@@ -2,7 +2,7 @@
 
 let spriteAtlas, score, level, transitionFrames, timeLeft;
 
-let bonusText, bonusAmmount;
+let bonusText, bonusAmmount, bonusGivenTime;
 
 let GameState = {
 	PLAY: 0,
@@ -78,8 +78,10 @@ function gameSetState(newState) {
 			musicOn = true;
 			levelStartTime = time;
 
+			gameBonusSet("Lives bonus ", lives * LIVE_BONUS_SCORE);
+
 			//gameBottomText = "Lives bonus " + lives * LIVE_BONUS_SCORE;
-			score += lives * LIVE_BONUS_SCORE;
+			//score += lives * LIVE_BONUS_SCORE;
 
 			gameIsNewHiscore = savefileUpdateHiscore(score);
 			break;
@@ -104,12 +106,7 @@ function gameNextLevel(now = false) {
 
 	musicOn = false;
 
-	gameBottomText = undefined;
-
-	//gameBottomText = "Time bonus " + Math.ceil(timeLeft) * TIME_BONUS_SCORE;
-
-	bonusAmmount = Math.ceil((timeLeft + 1) * TIME_BONUS_SCORE);
-	bonusText = "Time bonus ";
+	gameBonusSet("Time bonus ", Math.ceil((timeLeft + 1) * TIME_BONUS_SCORE));
 
 	transitionFrames = TRANSITION_FRAMES;
 }
@@ -119,6 +116,8 @@ function gameUpdate() {
 
 	switch (gameState) {
 		case GameState.WON:
+			gameBonusUpdate();
+
 			VictoryRocket.spawnRandom();
 			cameraPos = cameraPos.lerp(player.pos, 0.05);
 			if (time - levelStartTime > 5) {
@@ -143,18 +142,7 @@ function gameUpdate() {
 				let transProgress = (TRANSITION_FRAMES - transitionFrames) / TRANSITION_FRAMES;
 
 				// Bonus
-				if (level > 0 && transProgress > 0.3 && bonusAmmount > 0) {
-					if (transitionFrames % 2 == 0) {
-						if (bonusAmmount >= TIME_BONUS_SCORE) {
-							score += TIME_BONUS_SCORE;
-							bonusAmmount -= TIME_BONUS_SCORE;
-							sound_score.play();
-						} else {
-							score += bonusAmmount;
-							bonusAmmount = 0;
-						}
-					}
-				}
+				if (level > 0) gameBonusUpdate();
 
 				// Camera
 
@@ -360,7 +348,7 @@ function gameRenderPost() {
 
 			gameDrawHudText(scoreText, overlayCanvas.width / 2, halfTile);
 
-			gameDrawHudText("Life bonus " + lives + " x " + LIVE_BONUS_SCORE, overlayCanvas.width / 2, halfTile * 3, 0.7);
+			if (bonusText) gameDrawHudText(bonusText + bonusAmmount, overlayCanvas.width / 2, halfTile * 3, 0.7);
 
 			gameDrawHudText("BE FREE BIRD !", overlayCanvas.width / 2, overlayCanvas.height * 0.85, 3);
 
@@ -387,6 +375,31 @@ function gameRenderPost() {
 	mainContext.drawImage(overlayCanvas, 0, 0);
 
 	if (player) player.renderTop(); // On top of everything !
+}
+
+// BONUS STUFF
+
+function gameBonusSet(text, ammount) {
+	bonusText = text;
+	bonusAmmount = ammount;
+	bonusGivenTime = time;
+}
+
+function gameBonusUpdate() {
+	if (time - bonusGivenTime < 1) return; // Intial pause
+
+	if (time - bonusGivenTime > 5) bonusText = undefined;
+
+	if (transitionFrames % 2 == 0) {
+		if (bonusAmmount >= TIME_BONUS_SCORE) {
+			score += TIME_BONUS_SCORE;
+			bonusAmmount -= TIME_BONUS_SCORE;
+			sound_score.play();
+		} else {
+			score += bonusAmmount;
+			bonusAmmount = 0;
+		}
+	}
 }
 
 engineInit(gameInit, gameUpdate, gameUpdatePost, gameRender, gameRenderPost, ["tiles.png"]);

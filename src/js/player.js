@@ -123,7 +123,8 @@ class Player extends EngineObject {
 
 			if (!this.onGroundLastFrame && this.velocityLastFrame.y < -0.1) {
 				// Land
-				sound_dodge.play(this.pos);
+				let landingStrength = abs(this.velocityLastFrame.y) * 5;
+				sound_dodge.play(this.pos, landingStrength);
 				makeSmoke(this.pos.add(vec2(0, -0.5)));
 			}
 		} else {

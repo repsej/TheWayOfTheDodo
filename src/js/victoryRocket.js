@@ -154,7 +154,7 @@ class VictoryRocket extends EngineObject {
 			let explosion = new ParticleEmitter(
 				screenToWorld(this.pos), // pos
 				0, // angle
-				0, // emitSize
+				1, // emitSize
 				0.1, // emitTime
 				200, // emitRate
 				PI * 2, // emiteConeAngle
