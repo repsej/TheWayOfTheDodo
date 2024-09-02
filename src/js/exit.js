@@ -18,4 +18,10 @@ class Exit extends EngineObject {
 		}
 		return false;
 	}
+
+	collideWithTile() {
+		if (abs(this.velocity.y) > 0.1) sound_explosion.play(this.pos, 0.1 + abs(this.velocity.y));
+
+		return true;
+	}
 }
