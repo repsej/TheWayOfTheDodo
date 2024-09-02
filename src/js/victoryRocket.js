@@ -62,7 +62,10 @@ class VictoryRocket extends EngineObject {
 
 			gameBlinkFrames += size * 3;
 
-			setTimeout(() => sound_explosion.play(this.pos, size / MAX_SIZE), 500 / size);
+			setTimeout(() => {
+				gameCameraShake(size - 1);
+				sound_explosion.play(this.pos, size / MAX_SIZE);
+			}, 500 / size);
 
 			//hudFlashScreen(hud_flashColor, size * 5);
 

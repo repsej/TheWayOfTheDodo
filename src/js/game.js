@@ -22,6 +22,7 @@ let lives = undefined;
 let titleSize;
 var gameIsNewHiscore = false;
 let gameBlinkFrames = 0;
+let cameraShake = vec2();
 
 let title;
 
@@ -93,18 +94,16 @@ function gameSetState(newState) {
 	}
 }
 
-function gameNextLevel(now = false) {
-	if (now) {
-		transitionFrames = 1;
-		return;
-	}
-
+function gameNextLevel() {
 	if (transitionFrames > 0) return;
 
 	musicPlayCrash();
 
-	sound_exit.play(player.pos);
+	sound_exit.play(player.pos, 3);
 	player.jumpToNextLevel();
+
+	gameBlinkFrames = 10;
+	gameCameraShake();
 
 	musicOn = false;
 
@@ -209,6 +208,14 @@ function gameUpdate() {
 		if (keyWasPressed("PageUp")) gameSkipToLevel(++level);
 		if (keyWasPressed("PageDown")) gameSkipToLevel(--level);
 	}
+
+	cameraShake = cameraShake.scale(-0.9);
+	cameraPos = cameraPos.add(cameraShake);
+}
+
+function gameCameraShake(strength = 1) {
+	strength /= 2;
+	cameraShake = cameraShake.add(randInCircle(strength, strength / 2));
 }
 
 function gameUpdatePost() {}

@@ -14,13 +14,16 @@ class Exit extends EngineObject {
 
 	collideWithObject(o) {
 		if (o instanceof Player) {
-			if (o.pos.distanceSquared(this.pos) < 2) gameNextLevel();
+			if (o.pos.distanceSquared(this.pos) < 2) {
+
+				gameNextLevel();
+			}
 		}
 		return false;
 	}
 
 	collideWithTile() {
-		if (abs(this.velocity.y) > 0.1) sound_explosion.play(this.pos, 0.1 + abs(this.velocity.y));
+		if (abs(this.velocity.y) > 0.1) sound_explosion.play(this.pos, 0.1 + abs(this.velocity.y / 2));
 
 		return true;
 	}
