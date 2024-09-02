@@ -79,7 +79,7 @@ function gameSetState(newState) {
 			musicOn = true;
 			levelStartTime = time;
 
-			gameBonusSet("Lives bonus ", lives * LIVE_BONUS_SCORE, 3);
+			gameBonusSet("Lives bonus ", lives * LIVE_BONUS_SCORE, 2);
 
 			//gameBottomText = "Lives bonus " + lives * LIVE_BONUS_SCORE;
 			//score += lives * LIVE_BONUS_SCORE;
@@ -356,7 +356,8 @@ function gameRenderPost() {
 
 			gameDrawHudText(scoreText, overlayCanvas.width / 2, halfTile);
 
-			if (bonusText) gameDrawHudText(bonusText + bonusAmmount, overlayCanvas.width / 2, halfTile * 3, 0.7);
+			if (bonusText && time - bonusGivenTime > -1)
+				gameDrawHudText(bonusText + bonusAmmount, overlayCanvas.width / 2, halfTile * 3, 0.7);
 
 			gameDrawHudText("BE FREE BIRD !", overlayCanvas.width / 2, overlayCanvas.height * 0.85, 3);
 
@@ -400,10 +401,11 @@ function gameBonusUpdate() {
 	if (bonusAmmount <= 0) return false;
 
 	if (transitionFrames % 2 == 0) {
+		sound_score.play();
+
 		if (bonusAmmount > TIME_BONUS_SCORE) {
 			score += TIME_BONUS_SCORE;
 			bonusAmmount -= TIME_BONUS_SCORE;
-			sound_score.play();
 		} else {
 			score += bonusAmmount;
 			bonusAmmount = 0;

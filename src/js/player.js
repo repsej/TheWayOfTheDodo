@@ -59,9 +59,9 @@ class Player extends EngineObject {
 	jumpToNextLevel() {
 		this.setCollision(false, false, false);
 
-		let fromButton = (levelSize.y - this.pos.y) / levelSize.y;
+		let height = (levelSize.y - this.pos.y) / levelSize.y;
 
-		this.forceJumpY = 0.15 + fromButton / 4;
+		this.forceJumpY = 0.15 + height / 4;
 
 		this.velocity.x /= 2;
 		this.jump();
@@ -69,6 +69,7 @@ class Player extends EngineObject {
 		this.gravityScale = 0.1;
 		this.angleDamping = 0.9;
 		this.damping = 0.99;
+		this.doFlap = false;
 	}
 
 	update() {
