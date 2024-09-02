@@ -16,7 +16,7 @@ const sound_splat = new Sound([2,.1,523.2511,.13,,.12,4,1.23,-46.2,,-100,.01,.01
 const sound_squark = new Sound([1, 0.2, 600, 0.05, 0.13, 0.13, 2, 0.5, 50, , 10, 0.11, 0.02, , 20, 0.12, , , , 0.5, 5e3 ]);
 
 // prettier-ignore
-const sound_explosion = new Sound([2.86,0.5,802,,.05,.5,4,4.59,,,,,,1.2,,1.6,.21,.31,.1,.1]);
+const sound_explosion = new Sound([4,.5,802,.1,.05,.5,4,4.59,,,,,,1.2,,2,.21,.31,.1,.1]);
 sound_explosion.range = 0;
 
 // prettier-ignore

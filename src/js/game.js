@@ -21,6 +21,7 @@ let gameBottomText = undefined;
 let lives = undefined;
 let titleSize;
 var gameIsNewHiscore = false;
+let gameBlinkFrames = 0;
 
 let title;
 
@@ -382,6 +383,13 @@ function gameRenderPost() {
 	if (gameBottomText) gameDrawHudText(gameBottomText, overlayCanvas.width * 0.5, overlayCanvas.height - halfTile);
 
 	mainContext.drawImage(overlayCanvas, 0, 0);
+
+	if (gameBlinkFrames > 0) {
+		gameBlinkFrames--;
+		let alpha = 0.2 + gameBlinkFrames / 10;
+
+		drawRect(mainCanvasSize.scale(0.5), mainCanvasSize, new Color(1, 1, 1, alpha), 0, undefined, true);
+	}
 
 	if (player) player.renderTop(); // On top of everything !
 }

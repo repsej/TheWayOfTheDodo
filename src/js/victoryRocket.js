@@ -60,7 +60,9 @@ class VictoryRocket extends EngineObject {
 
 			let size = rand(1, MAX_SIZE);
 
-			setTimeout(() => sound_explosion.play(this.pos, size / MAX_SIZE), rand(500, 1000));
+			gameBlinkFrames += size * 3;
+
+			setTimeout(() => sound_explosion.play(this.pos, size / MAX_SIZE), 500 / size);
 
 			//hudFlashScreen(hud_flashColor, size * 5);
 
