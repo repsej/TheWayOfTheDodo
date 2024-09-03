@@ -345,14 +345,10 @@ function gameRenderPost() {
 				scoreText += "          Hiscore " + savefileGetHiscore();
 			}
 			gameDrawHudText(scoreText, overlayCanvas.width / 2, halfTile);
-			if (gameIsNewHiscore && (time * 4) % 2 > 1) gameDrawHudText("NEW HISCORE", overlayCanvas.width / 2, halfTile * 3);
+			if (gameIsNewHiscore && (time * 2) % 2 > 1)
+				gameDrawHudText("NEW HISCORE", overlayCanvas.width / 2, halfTile * 3, 2);
 
-			gameDrawHudText(
-				"See, the number 13 really is dangerous !",
-				overlayCanvas.width / 2,
-				overlayCanvas.height - 3 * halfTile,
-				1
-			);
+			gameDrawHudText("Beware the danger of 13 !", overlayCanvas.width / 2, overlayCanvas.height - 3 * halfTile, 1);
 
 			break;
 
@@ -364,7 +360,7 @@ function gameRenderPost() {
 
 			gameDrawHudText(scoreText, overlayCanvas.width / 2, halfTile);
 
-			if (bonusText && time - bonusGivenTime > -1)
+			if (bonusText && time - bonusGivenTime > -1 && !gameIsNewHiscore)
 				gameDrawHudText(bonusText + bonusAmmount, overlayCanvas.width / 2, halfTile * 3, 0.7);
 
 			gameDrawHudText("BE FREE BIRD !", overlayCanvas.width / 2, overlayCanvas.height * 0.85, 3);
@@ -372,7 +368,7 @@ function gameRenderPost() {
 			if (gameIsNewHiscore) {
 				// blink
 				if ((time * 2) % 2 > 1) {
-					gameDrawHudText("NEW HISCORE", overlayCanvas.width / 2, overlayCanvas.height * 0.75, 3);
+					gameDrawHudText("NEW HISCORE", overlayCanvas.width / 2, halfTile * 3, 2);
 				}
 			}
 
