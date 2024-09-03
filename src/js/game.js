@@ -280,7 +280,6 @@ function gameDrawHudText(
 function gameRender() {}
 
 function gameRenderPost() {
-	let scoreText;
 	let halfTile = (overlayCanvas.height * 0.5) / levelSize.y;
 
 	switch (gameState) {
@@ -288,9 +287,8 @@ function gameRenderPost() {
 			//gameDrawHudText(levelTexts[level], overlayCanvas.width * 0.5, overlayCanvas.height - halfTile);
 
 			if (level == 0) {
-				if (savefileGetHiscore()) {
+				if (savefileGetHiscore())
 					gameDrawHudText("Hiscore " + savefileGetHiscore(), overlayCanvas.width * 0.5, halfTile);
-				}
 
 				let subtitleTopPos = worldToScreen(vec2(levelSize.x / 2, levelSize.y * 0.45));
 				let subtitleBottomPos = worldToScreen(vec2(levelSize.x / 2, levelSize.y * 0.4));
@@ -338,39 +336,19 @@ function gameRenderPost() {
 			break;
 
 		case GameState.GAME_OVER:
+			gameDrawScoreStuff(halfTile);
+
 			gameDrawHudText("GAME OVER", overlayCanvas.width / 2, overlayCanvas.height * 0.3, 5);
-
-			scoreText = "Score " + score;
-			if (savefileGetHiscore()) {
-				scoreText += "          Hiscore " + savefileGetHiscore();
-			}
-			gameDrawHudText(scoreText, overlayCanvas.width / 2, halfTile);
-			if (gameIsNewHiscore && (time * 2) % 2 > 1)
-				gameDrawHudText("NEW HISCORE", overlayCanvas.width / 2, halfTile * 3, 2);
-
 			gameDrawHudText("Beware the danger of 13 !", overlayCanvas.width / 2, overlayCanvas.height - 3 * halfTile, 1);
-
 			break;
 
 		case GameState.WON:
-			scoreText = "Score " + score;
-			if (savefileGetHiscore()) {
-				scoreText += "          Hiscore " + savefileGetHiscore();
-			}
-
-			gameDrawHudText(scoreText, overlayCanvas.width / 2, halfTile);
+			gameDrawScoreStuff(halfTile);
 
 			if (bonusText && time - bonusGivenTime > -1 && !gameIsNewHiscore)
 				gameDrawHudText(bonusText + bonusAmmount, overlayCanvas.width / 2, halfTile * 3, 0.7);
 
 			gameDrawHudText("BE FREE BIRD !", overlayCanvas.width / 2, overlayCanvas.height * 0.85, 3);
-
-			if (gameIsNewHiscore) {
-				// blink
-				if ((time * 2) % 2 > 1) {
-					gameDrawHudText("NEW HISCORE", overlayCanvas.width / 2, halfTile * 3, 2);
-				}
-			}
 
 			if (!isTouchDevice) {
 				gameDrawHudText(
@@ -395,6 +373,16 @@ function gameRenderPost() {
 	}
 
 	if (player) player.renderTop(); // On top of everything !
+}
+
+function gameDrawScoreStuff(halfTile) {
+	let scoreText = "Score " + score;
+	if (savefileGetHiscore()) {
+		scoreText += "          Hiscore " + savefileGetHiscore();
+	}
+	gameDrawHudText(scoreText, overlayCanvas.width / 2, halfTile);
+	if (gameIsNewHiscore && (time * 2) % 2 > 1) gameDrawHudText("NEW HISCORE", overlayCanvas.width / 2, halfTile * 3, 2);
+	return scoreText;
 }
 
 // BONUS STUFF
