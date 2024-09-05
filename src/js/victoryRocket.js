@@ -35,7 +35,9 @@ class VictoryRocket extends EngineObject {
 
 		VictoryRocket.gravity = mainCanvas.height / 10000;
 
-		this.velocity = vec2(rand(-1, 1), -speed * rand(0.8, 1.2));
+		let speedRand = rand(0.8, 1.2);
+
+		this.velocity = vec2(rand(-1, 1), -speed * speedRand);
 		this.explodeTime = time + rand(1, 2);
 
 		VictoryRocket.liveRockets.add(this);
@@ -44,7 +46,7 @@ class VictoryRocket extends EngineObject {
 
 		this.rocketSize = rand(1, ROCKET_MAX_SIZE);
 
-		sound_rocketFly.play(this.pos, this.rocketSize / 10);
+		sound_rocketFly.play(this.pos, this.rocketSize / 10, 2 * speedRand);
 	}
 
 	update() {
@@ -154,7 +156,7 @@ class VictoryRocket extends EngineObject {
 				Colors.white, // colorStartB
 				Colors.white, // colorEndA
 				Colors.white, // colorEndB
-				0.2, // particleTime
+				0.25, // particleTime
 				this.rocketSize, // sizeStart
 				0, // sizeEnd
 				0.001, // particleSpeed
@@ -164,7 +166,7 @@ class VictoryRocket extends EngineObject {
 				0, // gravityScale
 				PI, // particleCone
 				0.9, //fadeRate,
-				0, // randomness
+				0.1, // randomness
 				false, // collide
 				false, // additive
 				true, // randomColorLinear

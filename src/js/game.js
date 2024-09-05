@@ -196,7 +196,7 @@ function gameUpdate() {
 
 		if (keyWasPressed("KeyK")) player.kill();
 		if (keyWasPressed("KeyN")) gameNextLevel();
-		if (keyWasPressed("KeyT")) levelStartTime = time - TIME_MAX + 11;
+		if (keyWasPressed("KeyT")) levelStartTime = time - TIME_MAX - 1;
 	}
 
 	if (!IS_RELEASE || gameState == GameState.WON) {
