@@ -17,12 +17,17 @@ const sound_squark = new Sound([1, 0.2, 600, 0.05, 0.13, 0.13, 2, 0.5, 50, , 10,
 
 // prettier-ignore
 const sound_explosion = new Sound([4,.5,802,.1,.05,.5,4,4.59,,,,,,1.2,,2,.21,.31,.1,.1]);
-sound_explosion.range = 0;
 
 // prettier-ignore
 const sound_exit = new Sound([.7,,118,.03,.28,.41,1,.2,-6,-162,-109,.05,.1,,,,,.51,.27,.06,496]); // Powerup 1173
 
 const sound_exitAppear = new Sound([, , 336, 0.03, 0.21, 0.3, , 2.1, , -22, , , 0.1, 0.4, , , , 0.77, 0.12]); // Powerup 1180
+
+const sound_rocketFly = new Sound([0.2, 0.1, 1e3, , 0.2, 2, , 0, -0.1, , , , , 0.3, , , , , 0.15]);
+
+// No getting fainter w range
+sound_explosion.range = 0;
+sound_rocketFly.range = 0;
 
 ///////////////////////////////////////////////////////////////////////////////
 // special effects

@@ -69,7 +69,7 @@ function gameSetState(newState) {
 			levelStartTime = time;
 			levelBuild(14);
 			musicInit(22);
-			new ConcreteBlock(vec2(levelSize.x / 2, levelSize.y * 2));
+			new ConcreteBlock(vec2(levelSize.x / 2, levelSize.y * 4));
 			gameIsNewHiscore = savefileUpdateHiscore(score);
 			break;
 
@@ -82,11 +82,6 @@ function gameSetState(newState) {
 			levelStartTime = time;
 
 			gameBonusSet("Lives bonus ", lives * LIVE_BONUS_SCORE, 2);
-
-			//gameBottomText = "Lives bonus " + lives * LIVE_BONUS_SCORE;
-			//score += lives * LIVE_BONUS_SCORE;
-
-			//gameIsNewHiscore = savefileUpdateHiscore(score);
 			break;
 
 		default:
@@ -338,8 +333,11 @@ function gameRenderPost() {
 		case GameState.GAME_OVER:
 			gameDrawScoreStuff(halfTile);
 
-			gameDrawHudText("GAME OVER", overlayCanvas.width / 2, overlayCanvas.height * 0.3, 5);
-			gameDrawHudText("Beware the danger of 13 !", overlayCanvas.width / 2, overlayCanvas.height - 3 * halfTile, 1);
+			gameDrawHudText("GAME OVER", overlayCanvas.width / 2, overlayCanvas.height * 0.15, 5);
+			gameDrawHudText("Beware the danger of 13 !", overlayCanvas.width / 2, overlayCanvas.height * 0.3, 2);
+
+			gameDrawHudText("Chamber " + level + " of 13", overlayCanvas.width / 2, overlayCanvas.height - 3 * halfTile, 1);
+
 			break;
 
 		case GameState.WON:
@@ -365,14 +363,15 @@ function gameRenderPost() {
 
 	mainContext.drawImage(overlayCanvas, 0, 0);
 
+	if (player) player.renderTop(); // On top of everything !
+
 	if (gameBlinkFrames > 0) {
 		gameBlinkFrames--;
 		let alpha = 0.2 + gameBlinkFrames / 10;
+		alpha = min(alpha, 1);
 
 		drawRect(mainCanvasSize.scale(0.5), mainCanvasSize, new Color(1, 1, 1, alpha), 0, undefined, true);
 	}
-
-	if (player) player.renderTop(); // On top of everything !
 }
 
 function gameDrawScoreStuff(halfTile) {

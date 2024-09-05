@@ -1,5 +1,7 @@
 /** @format */
 
+const ROCKET_MAX_SIZE = 3;
+
 class VictoryRocket extends EngineObject {
 	static gravity = 10;
 	static liveRockets = new Set();
@@ -39,6 +41,10 @@ class VictoryRocket extends EngineObject {
 		VictoryRocket.liveRockets.add(this);
 
 		this.renderOrder = -1000;
+
+		this.rocketSize = rand(1, ROCKET_MAX_SIZE);
+
+		sound_rocketFly.play(this.pos, this.rocketSize / 10);
 	}
 
 	update() {
@@ -56,45 +62,25 @@ class VictoryRocket extends EngineObject {
 
 			let explosionColor = hsl(rand(1), 1, 0.5);
 
-			const MAX_SIZE = 3;
-
-			let size = rand(1, MAX_SIZE);
-
-			gameBlinkFrames += size * 3;
+			gameBlinkFrames += this.rocketSize * 4;
 
 			setTimeout(() => {
-				gameCameraShake(size - 1);
-				sound_explosion.play(this.pos, size / MAX_SIZE);
-			}, 500 / size);
+				gameCameraShake(this.rocketSize - 1);
+				sound_explosion.play(this.pos, this.rocketSize / ROCKET_MAX_SIZE);
+			}, 1000 / this.rocketSize);
 
-			//hudFlashScreen(hud_flashColor, size * 5);
-
-			// DEFS.fx.flashSprite(
-			// 	screenToWorld(this.pos),
-			// 	vec2(0.4 * size),
-			// 	DEFS.tileNumbers.star,
-			// 	DEFS.TILE_SIZE,
-			// 	Colors.white,
-			// 	undefined,
-			// 	rand(PI),
-			// 	250 * size,
-			// 	1e16
-			// );
-
-			//laterCall(() => DEFS.sounds.vitoryRocketExplode.play(undefined, 3 * size * size * size), rand(500, 1000));
-
-			let emitRate = size * 100 * rand(0.5, 1.5);
-			let particleTime = size * 2 * rand(0.5, 1.5);
-			let sizeStart = size * 0.15 * rand(0.5, 1.5);
+			let emitRate = this.rocketSize * 100 * rand(0.5, 1.5);
+			let particleTime = this.rocketSize * 2 * rand(0.5, 1.5);
+			let sizeStart = this.rocketSize * 0.2 * rand(0.5, 1.5);
 			let sizeEnd = 0.0;
-			let particleSpeed = rand(0.08, 0.15) * size;
+			let particleSpeed = rand(0.08, 0.15) * this.rocketSize;
 			let particleAngleSpeed = rand(0.1, 0.5);
 			let fadeRate = rand(0.1, 0.2);
 			let randomness = rand(0.2, 0.5);
-			let damping = (9 + size / MAX_SIZE) / 10;
+			let damping = (9 + this.rocketSize / ROCKET_MAX_SIZE) / 10;
 			let dampingTrails = damping; // * 0.99;
 
-			let gravityScale = rand(0.01, 0.3);
+			let gravityScale = rand(0.005, 0.2);
 
 			let particles = new ParticleEmitter(
 				screenToWorld(this.pos), // pos
@@ -169,7 +155,7 @@ class VictoryRocket extends EngineObject {
 				Colors.white, // colorEndA
 				Colors.white, // colorEndB
 				0.2, // particleTime
-				size, // sizeStart
+				this.rocketSize, // sizeStart
 				0, // sizeEnd
 				0.001, // particleSpeed
 				0.1, // particleAngleSpeed
@@ -188,6 +174,6 @@ class VictoryRocket extends EngineObject {
 	}
 
 	render() {
-		drawRect(screenToWorld(this.pos), this.size.scale(0.03), this.color, this.angle, true);
+		drawRect(screenToWorld(this.pos), this.size.scale(0.04), this.color, this.angle, true);
 	}
 }
