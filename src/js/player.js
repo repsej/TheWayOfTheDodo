@@ -23,7 +23,7 @@ class Player extends EngineObject {
 		this.forceWallJumpX = 0.15;
 
 		this.maxXSpeed = 0.2;
-		this.xAccel = 0.004;
+		this.xAccelGround = 0.006;
 
 		this.xSpeed = 0;
 
@@ -107,7 +107,7 @@ class Player extends EngineObject {
 			if (this.jumpButtonPressed) this.jump();
 
 			// acceleration
-			this.velocity.x += this.mirror ? -this.xAccel : this.xAccel;
+			this.velocity.x += this.mirror ? -this.xAccelGround : this.xAccelGround;
 
 			// update walk cycle
 			const speed = this.velocity.length();
