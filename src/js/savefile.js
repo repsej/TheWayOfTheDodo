@@ -1,12 +1,12 @@
 /** @format */
 
 function savefileGetHiscore() {
-	return localStorage["hiscore"] | 0;
+	return localStorage["dodo_hs"] | 0;
 }
 
 function savefileUpdateHiscore(score) {
 	if (score > savefileGetHiscore()) {
-		localStorage["hiscore"] = score;
+		localStorage["dodo_hs"] = score;
 		return true;
 	}
 
