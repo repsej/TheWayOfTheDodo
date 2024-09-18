@@ -6,10 +6,11 @@ A Js13KGames 2024 entry
 
 Brief notes on how the procedurally generated music is done.
 
+- All the music code is in "src/js/music.js"
 - All music is stored in simple arrays with the note numbers: 0 is C, 1 is C#, etc.
 - A value of "undefined" is a pause.  Here written as a lowercase p.
-- All songs are 8 bars long.  
 - All notes are 1/8 and can only be played on beat or off-beat.  No triples or other fancy stuff.
+- All songs are 8 bars long.
 
 ### The melody
 
@@ -35,13 +36,13 @@ Example:
 
 The one bar rhythm could be: 
 
-[0, 0, p, p, 0, p, 0, p].
+	[0, 0, p, p, 0, p, 0, p].
 
 And the two bar main melody could become: 
 
-[12, 12, p, p, 16, p, 16, p,
+	[12, 12, p, p, 16, p, 16, p,
 
- 19, 19, p, p, 16, p, 21, p ]
+	19, 19, p, p, 16, p, 21, p ]
 
 ### Mutating music
 
@@ -53,7 +54,7 @@ The mutate function does two things.
 
 When mutating the parts of the melody I do 5 swaps and 3 mutations.  
 
-This I found made the mutated melodies recognisable but still interestingly different.
+This I found made the mutated melodies interestingly different but still recognizable.
 
 ### Bass and chords
 All chord progressions always start on the scale root (0).
@@ -72,6 +73,6 @@ Eg. a rather good/lucky chord progression could be [0, 0, 0, 0, 5, 5, 7, 7].
 
 A random number generator is seeded with the level number, so each level has it's own music.
 
-The parameters for the instruments (bass, bass drum, snare, lead and crash) are also randomly mutated.
+The parameters for the instruments (bass, bass drum, snare, lead and crash) are also randomly mutated (+/- 50%).
 
-On the win screen you can (on desktop) change music with page up and down.  
+On the win screen you can (on desktop) select music with page up and down.  
