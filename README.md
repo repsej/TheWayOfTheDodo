@@ -9,7 +9,7 @@ Brief notes on how the procedurally generated music is done.
 - All the music code is in "src/js/music.js"
 - All music is stored in simple arrays with the note numbers: 0 is C, 1 is C#, etc.
 - A value of "undefined" is a pause.  Here written as a lowercase p.
-- All notes are 1/8 and can only be played on beat or off-beat.  No triples or other fancy stuff.
+- All notes are 1/8 long and can only be played on beat or off-beat.  No triples or other fancy stuff.
 - All songs are 8 bars long.
 
 ### The melody
@@ -63,16 +63,19 @@ From there on the chords are randomly the root, the 4'th or the 5'th of the mino
 
 Each chord is repeated for two bars.
 
+(Eg. a rather good/lucky chord progression could be [0, 0, 0, 0, 5, 5, 7, 7].)
 
-Each bar has the same random bass rhythm.
-The bass plays power chords (chord root note + chord root note + 7).
+The bass plays power chords (chord root & chord root + 7).
 
-Eg. a rather good/lucky chord progression could be [0, 0, 0, 0, 5, 5, 7, 7].
+All bass bars has the same random two bar rhythm.
+
 
 ### Misc stuff
 
-A random number generator is seeded with the level number, so each level has it's own music.
+- A random number generator is seeded with the level number, so each level has it's own music.
 
-The parameters for the instruments (bass, bass drum, snare, lead and crash) are also randomly mutated (+/- 50%).
+- The parameters for the instruments (bass, bass drum, snare, lead and crash) are also randomly mutated (+/- 50%).
 
-On the win screen you can (on desktop) select music with page up and down.  
+- On the win screen you can (on desktop) select music with page up and down.  
+
+- A crash is played when each of the four part starts (first is loud).
