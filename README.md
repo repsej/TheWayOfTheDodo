@@ -118,7 +118,7 @@ All bass bars has the same random two bar rhythm.
 
 - Fun side note: In danish we have the exact same word play with "fugl" and "ful" ... they sound the same and they also mean bird and foul.  The words most probably comes from some common Germanic language.
 
-- The death scene: Inspired by the Monty Python foot of death - which was also used in the death scene of the old ZX Spectrum platformer game "Jet Set Willy".
+- The death scene: Inspired by the Monty Python foot of death - which was also used in the death scene of the '84 ZX Spectrum platformer game "Jet Set Willy".
 
 - "Be Free Bird !": A ref to the '74 song "Freebird" by the classic rock band "Lynyrd Skynyrd"
 
