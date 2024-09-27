@@ -8,6 +8,7 @@ let GameState = {
 	PLAY: 0,
 	GAME_OVER: 1,
 	WON: 2,
+	TRANSITION: 3,
 };
 
 let gameState = GameState.PLAY;
@@ -18,6 +19,7 @@ const TIME_MAX = 45;
 const LIVES_START = 3;
 
 let gameBottomText = undefined;
+let gameBottomTopText = undefined;
 let lives = undefined;
 let titleSize;
 var gameIsNewHiscore = false;
@@ -62,6 +64,8 @@ function gameInit() {
 
 function gameSetState(newState) {
 	gameBottomText = undefined;
+	gameBottomTopText = undefined;
+
 	gameState = newState;
 
 	switch (newState) {
@@ -74,14 +78,17 @@ function gameSetState(newState) {
 			break;
 
 		case GameState.WON:
-			level = 13;
-			gameNextLevel();
+			gameSkipToLevel(13);
 			level = 31;
 			musicInit(level);
 			musicOn = true;
 			levelStartTime = time;
 
 			gameBonusSet("Lives bonus ", lives * LIVE_BONUS_SCORE, 2);
+			break;
+
+		case GameState.TRANSITION:
+			transitionFrames = TRANSITION_FRAMES;
 			break;
 
 		default:
@@ -92,7 +99,7 @@ function gameSetState(newState) {
 function gameNextLevel() {
 	if (transitionFrames > 0) return;
 
-	musicPlayCrash();
+	//musicPlayCrash();
 
 	sound_exit.play(player.pos, 3);
 	player.jumpToNextLevel();
@@ -100,11 +107,11 @@ function gameNextLevel() {
 	gameBlinkFrames = 10;
 	gameCameraShake();
 
-	musicOn = false;
+	//musicOn = false;
 
-	gameBonusSet("Time bonus ", Math.ceil((timeLeft + 1) * TIME_BONUS_SCORE));
+	gameBonusSet("Time bonus ", Math.round((timeLeft + 1) * TIME_BONUS_SCORE));
 
-	transitionFrames = TRANSITION_FRAMES;
+	gameSetState(GameState.TRANSITION);
 }
 
 function gameUpdate() {
@@ -135,10 +142,14 @@ function gameUpdate() {
 			cameraPos = levelSize.scale(0.5);
 			break;
 
-		case GameState.PLAY:
-			if (transitionFrames > 0) {
-				let transProgress = (TRANSITION_FRAMES - transitionFrames) / TRANSITION_FRAMES;
+		case GameState.TRANSITION:
+			let transProgress = (TRANSITION_FRAMES - transitionFrames) / TRANSITION_FRAMES;
+			cameraPos = cameraPos.lerp(player.pos, transProgress / 10);
 
+			gameBottomTopText = "Chamber " + level + " of 13";
+			//gameBottomText = undefined;
+
+			if (transitionFrames > 0) {
 				// Bonus
 				if (level > 0) gameBonusUpdate();
 
@@ -147,39 +158,50 @@ function gameUpdate() {
 				cameraPos.y += levelSize.y * 0.035 * transProgress;
 				cameraScale *= 0.992;
 				titleSize *= 0.992;
-				cameraPos = cameraPos.lerp(player.pos, transProgress / 10);
 
 				player.drawSize = player.drawSize.scale(1.02);
 
 				transitionFrames--;
 
 				if (transitionFrames <= 0) {
-					if (level == 0) score = 0;
+					if (level == 0) {
+						score = 0;
+						gameSkipToLevel(++level);
+					}
+
 					bonusText = undefined;
-					gameSkipToLevel(++level);
+
+					gameBottomText = "[Click to continue]";
 				}
 			} else {
-				if (player) timeLeft = TIME_MAX - (time - levelStartTime);
-
-				if (timeLeft <= -1 && level != 0) {
-					player.kill(true);
+				if (inputJumpReleased()) {
+					gameSkipToLevel(++level);
 				}
-
-				timeLeft = max(timeLeft, 0);
-
-				if (level == 0) {
-					//gameBottomText = levelTexts[level];
-					//gameBottomText = "Dodo Dojo: 13 chambers of fowl play";
-					gameBottomText = isTouchDevice ? "[Tap to jump]" : "[Space to jump]";
-
-					timeLeft = 0;
-				} else {
-					gameBottomText = "Chamber " + level + " of 13";
-					// if (levelTexts[level]) gameBottomText += ". " + levelTexts[level];
-				}
-				cameraScale = min(mainCanvas.width / levelSize.x, mainCanvas.height / levelSize.y);
-				cameraPos = levelSize.scale(0.5);
 			}
+
+			break;
+
+		case GameState.PLAY:
+			if (player) timeLeft = TIME_MAX - (time - levelStartTime);
+
+			if (timeLeft <= -1 && level != 0) {
+				player.kill(true);
+			}
+
+			timeLeft = max(timeLeft, 0);
+
+			if (level == 0) {
+				//gameBottomText = levelTexts[level];
+				//gameBottomText = "Dodo Dojo: 13 chambers of fowl play";
+				gameBottomText = isTouchDevice ? "[Tap to jump]" : "[Space to jump]";
+
+				timeLeft = 0;
+			} else {
+				gameBottomText = "Chamber " + level + " of 13";
+				// if (levelTexts[level]) gameBottomText += ". " + levelTexts[level];
+			}
+			cameraScale = min(mainCanvas.width / levelSize.x, mainCanvas.height / levelSize.y);
+			cameraPos = levelSize.scale(0.5);
 			break;
 	}
 
@@ -216,7 +238,8 @@ function gameCameraShake(strength = 1) {
 function gameUpdatePost() {}
 
 function gameSkipToLevel(newLevel) {
-	gameBottomText = "";
+	gameBottomText = undefined;
+	gameBottomTopText = undefined;
 
 	if (gameState == GameState.WON) {
 		musicInit(level);
@@ -232,6 +255,9 @@ function gameSkipToLevel(newLevel) {
 	levelBuild(level);
 	musicInit(level);
 	musicOn = true;
+
+	gameSetState(GameState.PLAY);
+
 	//playMusic();
 }
 
@@ -278,6 +304,7 @@ function gameRenderPost() {
 	let halfTile = (overlayCanvas.height * 0.5) / levelSize.y;
 
 	switch (gameState) {
+		case GameState.TRANSITION:
 		case GameState.PLAY:
 			//gameDrawHudText(levelTexts[level], overlayCanvas.width * 0.5, overlayCanvas.height - halfTile);
 
@@ -317,7 +344,7 @@ function gameRenderPost() {
 				}
 
 				gameDrawHudText(
-					"Time " + Math.ceil(timeLeft),
+					"Time " + (timeLeft + 1).toFixed(2),
 					(overlayCanvas.width * 3) / 4,
 					halfTile,
 					undefined,
@@ -360,6 +387,9 @@ function gameRenderPost() {
 	}
 
 	if (gameBottomText) gameDrawHudText(gameBottomText, overlayCanvas.width * 0.5, overlayCanvas.height - halfTile);
+
+	if (gameBottomTopText)
+		gameDrawHudText(gameBottomTopText, overlayCanvas.width * 0.5, overlayCanvas.height - halfTile * 3);
 
 	mainContext.drawImage(overlayCanvas, 0, 0);
 
