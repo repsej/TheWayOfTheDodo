@@ -15,7 +15,7 @@ let gameState = GameState.PLAY;
 const TRANSITION_FRAMES = 180;
 const TIME_BONUS_SCORE = 100;
 const LIVE_BONUS_SCORE = 5000;
-const TIME_MAX = 45;
+const TIME_MAX = 46;
 const LIVES_START = 3;
 
 let gameBottomText = undefined;
@@ -109,7 +109,7 @@ function gameNextLevel() {
 
 	//musicOn = false;
 
-	gameBonusSet("Time bonus ", Math.round((timeLeft + 1) * TIME_BONUS_SCORE));
+	gameBonusSet("Time bonus ", Math.round(timeLeft * TIME_BONUS_SCORE));
 
 	gameSetState(GameState.TRANSITION);
 }
@@ -146,8 +146,7 @@ function gameUpdate() {
 			let transProgress = (TRANSITION_FRAMES - transitionFrames) / TRANSITION_FRAMES;
 			cameraPos = cameraPos.lerp(player.pos, transProgress / 10);
 
-			gameBottomTopText = "Chamber " + level + " of 13";
-			//gameBottomText = undefined;
+			if (level > 0) gameBottomText = "Chamber " + level + " of 13";
 
 			if (transitionFrames > 0) {
 				// Bonus
@@ -164,14 +163,13 @@ function gameUpdate() {
 				transitionFrames--;
 
 				if (transitionFrames <= 0) {
+					bonusText = undefined;
+					gameBottomTopText = "[Click to continue]";
+
 					if (level == 0) {
 						score = 0;
 						gameSkipToLevel(++level);
 					}
-
-					bonusText = undefined;
-
-					gameBottomText = "[Click to continue]";
 				}
 			} else {
 				if (inputJumpReleased()) {
@@ -184,7 +182,7 @@ function gameUpdate() {
 		case GameState.PLAY:
 			if (player) timeLeft = TIME_MAX - (time - levelStartTime);
 
-			if (timeLeft <= -1 && level != 0) {
+			if (timeLeft < 0 && level != 0) {
 				player.kill(true);
 			}
 
@@ -245,6 +243,8 @@ function gameSkipToLevel(newLevel) {
 		musicInit(level);
 		return;
 	}
+
+	gameBlinkFrames = 15;
 
 	if (newLevel == 14) {
 		gameSetState(GameState.WON);
@@ -344,7 +344,7 @@ function gameRenderPost() {
 				}
 
 				gameDrawHudText(
-					"Time " + (timeLeft + 1).toFixed(2),
+					"Time " + timeLeft.toFixed(2),
 					(overlayCanvas.width * 3) / 4,
 					halfTile,
 					undefined,
