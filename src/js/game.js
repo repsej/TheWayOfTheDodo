@@ -60,6 +60,10 @@ function gameInit() {
 	title = new EngineObject(vec2(levelSize.x / 2, levelSize.y * 0.7), vec2(20, 9), spriteAtlas.title);
 	title.setCollision(false, false, false);
 	title.gravityScale = 0;
+
+	gameBottomText = undefined;
+	gameBottomTopText = undefined;
+	gameBlinkFrames = 15;
 }
 
 function gameSetState(newState) {
@@ -70,6 +74,7 @@ function gameSetState(newState) {
 
 	switch (newState) {
 		case GameState.GAME_OVER:
+			gameBlinkFrames = 15;
 			levelStartTime = time;
 			levelBuild(14);
 			musicInit(22);
@@ -133,9 +138,11 @@ function gameUpdate() {
 			break;
 
 		case GameState.GAME_OVER:
+			gameBottomText = "Chamber " + level + " of 13";
+
 			if (time - levelStartTime > 5) {
 				if (!gameBottomText) sound_exitAppear.play();
-				gameBottomText = "[Click to start new game]";
+				gameBottomTopText = "[Click to start new game]";
 				if (inputJumpReleased()) gameInit();
 			}
 			cameraScale = min(mainCanvas.width / levelSize.x, mainCanvas.height / levelSize.y);
@@ -362,8 +369,6 @@ function gameRenderPost() {
 
 			gameDrawHudText("GAME OVER", overlayCanvas.width / 2, overlayCanvas.height * 0.15, 5);
 			gameDrawHudText("Beware the danger of 13 !", overlayCanvas.width / 2, overlayCanvas.height * 0.3, 2);
-
-			gameDrawHudText("Chamber " + level + " of 13", overlayCanvas.width / 2, overlayCanvas.height - 3 * halfTile, 1);
 
 			break;
 

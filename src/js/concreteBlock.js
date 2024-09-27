@@ -21,6 +21,7 @@ class ConcreteBlock extends EngineObject {
 			}, 200);
 
 			sound_explosion.play(o.pos, 5);
+			gameBlinkFrames = 15;
 		}
 		return false;
 	}
