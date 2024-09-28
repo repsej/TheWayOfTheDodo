@@ -1,6 +1,6 @@
 /** @format */
 
-let spriteAtlas, score, level, transitionFrames, timeLeft, newBestTime;
+let spriteAtlas, score, level, transitionFrames, timeLeft, gameBestLevelTimeStatus;
 
 let bonusText, bonusAmmount, bonusGivenTime;
 
@@ -22,7 +22,7 @@ let gameBottomText = undefined;
 let gameBottomTopText = undefined;
 let lives = undefined;
 let titleSize;
-var gameIsNewHiscore = false;
+var gameNewHiscoreStatus = undefined;
 let gameBlinkFrames = 0;
 let cameraShake = vec2();
 
@@ -43,7 +43,7 @@ function gameInit() {
 
 	// enable touch gamepad on touch devices
 	touchGamepadEnable = true;
-	gameIsNewHiscore = false;
+	gameNewHiscoreStatus = undefined;
 
 	transitionFrames = score = level = 0;
 	gravity = -0.01;
@@ -79,7 +79,7 @@ function gameSetState(newState) {
 			levelBuild(14);
 			musicInit(22);
 			new ConcreteBlock(vec2(levelSize.x / 2, levelSize.y * 4));
-			gameIsNewHiscore = savefileHiscoreUpdate(score);
+			gameNewHiscoreStatus = savefileHiscoreUpdate(score);
 			break;
 
 		case GameState.WON:
@@ -94,9 +94,9 @@ function gameSetState(newState) {
 
 		case GameState.TRANSITION:
 			transitionFrames = TRANSITION_FRAMES;
-			newBestTime = false;
+			gameBestLevelTimeStatus = SAVEFILE_UPDATE_STATUS.NUMBER_LOWER;
 
-			if (level > 0) newBestTime = savefileTimeUpdate(level, timeLeft);
+			if (level > 0) gameBestLevelTimeStatus = savefileTimeUpdate(level, timeLeft);
 			break;
 
 		default:
@@ -128,7 +128,7 @@ function gameUpdate() {
 	switch (gameState) {
 		case GameState.WON:
 			if (gameBonusUpdate()) {
-				gameIsNewHiscore = savefileHiscoreUpdate(score);
+				gameNewHiscoreStatus = savefileHiscoreUpdate(score);
 			}
 
 			VictoryRocket.spawnRandom();
@@ -317,12 +317,21 @@ function gameRenderPost() {
 		case GameState.TRANSITION:
 			let bestTime = savefileTimeGet(level);
 			if (bestTime > 0) {
-				gameDrawHudText(
-					"Best " + bestTime.toFixed(2) + (newBestTime ? " NEW!" : ""),
-					(overlayCanvas.width * 3) / 4,
-					halfTile * 3,
-					0.7
-				);
+				let bestText = undefined;
+
+				switch (gameBestLevelTimeStatus) {
+					case SAVEFILE_UPDATE_STATUS.NUMBER_LOWER:
+						bestText = "(Best -" + (bestTime - timeLeft).toFixed(2) + ")";
+						break;
+					case SAVEFILE_UPDATE_STATUS.NUMBER_SAME:
+						bestText = "Record tied";
+						break;
+					case SAVEFILE_UPDATE_STATUS.NUMBER_HIGHER:
+						bestText = (time * 2) % 2 > 1 ? "NEW BEST !" : "";
+						break;
+				}
+
+				gameDrawHudText(bestText, (overlayCanvas.width * 3) / 4, halfTile * 2, 0.7);
 			}
 
 		// fall-thru !
@@ -390,7 +399,7 @@ function gameRenderPost() {
 		case GameState.WON:
 			gameDrawScoreStuff(halfTile);
 
-			if (bonusText && time - bonusGivenTime > -1 && !gameIsNewHiscore)
+			if (bonusText && time - bonusGivenTime > -1 && gameNewHiscoreStatus == undefined)
 				gameDrawHudText(bonusText + bonusAmmount, overlayCanvas.width / 2, halfTile * 3, 0.7);
 
 			gameDrawHudText("BE FREE BIRD !", overlayCanvas.width / 2, overlayCanvas.height * 0.85, 3);
@@ -430,7 +439,18 @@ function gameDrawScoreStuff(halfTile) {
 		scoreText += "          Hiscore " + savefileHiscoreGet();
 	}
 	gameDrawHudText(scoreText, overlayCanvas.width / 2, halfTile);
-	if (gameIsNewHiscore && (time * 2) % 2 > 1) gameDrawHudText("NEW HISCORE", overlayCanvas.width / 2, halfTile * 3, 2);
+
+	switch (gameNewHiscoreStatus) {
+		case SAVEFILE_UPDATE_STATUS.NUMBER_LOWER:
+			break;
+		case SAVEFILE_UPDATE_STATUS.NUMBER_SAME:
+			gameDrawHudText("RECORD TIED", overlayCanvas.width / 2, halfTile * 3, 2);
+			break;
+		case SAVEFILE_UPDATE_STATUS.NUMBER_HIGHER:
+			if ((time * 2) % 2 > 1) gameDrawHudText("NEW HISCORE", overlayCanvas.width / 2, halfTile * 3, 2);
+			break;
+	}
+
 	return scoreText;
 }
 

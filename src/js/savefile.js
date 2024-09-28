@@ -1,30 +1,48 @@
 /** @format */
 
-function savefileGet(key, defaultValue = 0.0) {
-	return localStorage[key] | defaultValue;
+var SAVEFILE_UPDATE_STATUS = {
+	NUMBER_LOWER: -1,
+	NUMBER_SAME: 0,
+	NUMBER_HIGHER: 1,
+};
+
+function savefileGetNumber(key, defaultValue = 0.0) {
+	let retVal = localStorage.getItem(key);
+
+	if (retVal == null) {
+		return defaultValue;
+	} else {
+		return Number(retVal);
+	}
 }
 
-function savefileUpdate(key, value, defaultValue = 0.0) {
-	if (value > savefileGet(key, defaultValue)) {
-		localStorage[key] = value;
-		return true;
+function savefileUpdateNumber(key, value, defaultValue = 0.0) {
+	let diff = value - savefileGetNumber(key, defaultValue);
+
+	if (Math.abs(diff) < 0.001) {
+		return SAVEFILE_UPDATE_STATUS.NUMBER_SAME;
 	}
 
-	return false;
+	if (diff > 0) {
+		localStorage.setItem(key, value);
+		return SAVEFILE_UPDATE_STATUS.NUMBER_HIGHER;
+	} else {
+		return SAVEFILE_UPDATE_STATUS.NUMBER_LOWER;
+	}
 }
 
 function savefileHiscoreGet() {
-	return savefileGet("dodo_hs", 0);
+	return savefileGetNumber("dodo_hs", 0);
 }
 
 function savefileHiscoreUpdate(score) {
-	return savefileUpdate("dodo_hs", score);
+	return savefileUpdateNumber("dodo_hs", score);
 }
 
 function savefileTimeGet(level) {
-	return savefileGet("dodo_level" + level) / 1000;
+	return savefileGetNumber("dodo_level" + level);
 }
 
 function savefileTimeUpdate(level, time) {
-	return savefileUpdate("dodo_level" + level, time * 1000);
+	return savefileUpdateNumber("dodo_level" + level, time);
 }
