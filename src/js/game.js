@@ -450,7 +450,7 @@ function gameDrawScoreStuff(halfTile) {
 		case SAVEFILE_UPDATE_STATUS.NUMBER_LOWER:
 			break;
 		case SAVEFILE_UPDATE_STATUS.NUMBER_SAME:
-			gameDrawHudText("RECORD TIED", overlayCanvas.width / 2, halfTile * 3, 2);
+			gameDrawHudText("HISCORE TIED", overlayCanvas.width / 2, halfTile * 3, 2);
 			break;
 		case SAVEFILE_UPDATE_STATUS.NUMBER_HIGHER:
 			if ((time * 2) % 2 > 1) gameDrawHudText("NEW HISCORE", overlayCanvas.width / 2, halfTile * 3, 2);
