@@ -180,6 +180,8 @@ function gameUpdate() {
 
 				if (transitionFrames <= 0) {
 					bonusText = undefined;
+
+					if (!gameBottomTopText) sound_exitAppear.play();
 					gameBottomTopText = "[Click to continue]";
 
 					if (level == 0) {
@@ -327,10 +329,10 @@ function gameRenderPost() {
 
 				switch (gameBestLevelTimeStatus) {
 					case SAVEFILE_UPDATE_STATUS.NUMBER_LOWER:
-						bestText = "(Best -" + (bestTime - timeLeft).toFixed(2) + ")";
+						bestText = "Best -" + (bestTime - timeLeft).toFixed(2);
 						break;
 					case SAVEFILE_UPDATE_STATUS.NUMBER_SAME:
-						bestText = "Record tied";
+						bestText = "Best tied";
 						break;
 					case SAVEFILE_UPDATE_STATUS.NUMBER_HIGHER:
 						bestText = (time * 2) % 2 > 1 ? "NEW BEST !" : "";
