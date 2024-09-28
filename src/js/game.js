@@ -12,7 +12,7 @@ let GameState = {
 };
 
 let gameState = GameState.PLAY;
-const TRANSITION_FRAMES = 180;
+const TRANSITION_FRAMES = 240;
 const TIME_BONUS_SCORE = 100;
 const LIVE_BONUS_SCORE = 5000;
 const TIME_MAX = 46;
@@ -114,7 +114,7 @@ function gameNextLevel() {
 
 	//musicOn = false;
 
-	gameBonusSet("Time bonus ", Math.round(timeLeft * TIME_BONUS_SCORE));
+	gameBonusSet("Time bonus ", Math.round(timeLeft * TIME_BONUS_SCORE), 2);
 
 	gameSetState(GameState.TRANSITION);
 }
@@ -165,7 +165,7 @@ function gameUpdate() {
 				cameraScale *= 0.992;
 				titleSize *= 0.992;
 
-				player.drawSize = player.drawSize.scale(1.02);
+				player.drawSize = player.drawSize.scale(1.017);
 
 				transitionFrames--;
 

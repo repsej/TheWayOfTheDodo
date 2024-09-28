@@ -1,8 +1,7 @@
-
 TODO:
-
- - Nicer bonus counter
- - Time bonus should not be rounded off ??
+ - Fix reported mobile issue.
+ - Save (and show) best time per level
+ 
 
 FUCK IT:
  - Mauritius in the background ??
@@ -10,6 +9,10 @@ FUCK IT:
 
 
 DONE:
+ - Time bonus counting should wait longer before it starts counting
+ - Change keys of songs ?  NOO ... sounds horrible !
+ - Nicer bonus counter
+ - Time bonus should not be rounded off ??
  - More chords in songs ? NOO, SOUNDS BAD !
  - Reset time after death 
  - Stop auto do flap after a wall hit / jump
