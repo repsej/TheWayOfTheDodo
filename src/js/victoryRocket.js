@@ -176,6 +176,6 @@ class VictoryRocket extends EngineObject {
 	}
 
 	render() {
-		drawRect(screenToWorld(this.pos), this.size.scale(0.04), this.color, this.angle, true);
+		drawRect(screenToWorld(this.pos), this.size.scale(0.08), this.color, this.angle, true);
 	}
 }

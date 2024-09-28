@@ -263,6 +263,8 @@ class Player extends EngineObject {
 	kill(resetTime = false) {
 		if (!this.alive) return;
 
+		gameLastDiedOnLevel = level;
+
 		sound_splat.play(this.pos);
 		makeBlood(this.pos, 100);
 

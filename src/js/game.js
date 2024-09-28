@@ -1,6 +1,6 @@
 /** @format */
 
-let spriteAtlas, score, level, transitionFrames, timeLeft, gameBestLevelTimeStatus;
+let spriteAtlas, score, level, transitionFrames, timeLeft;
 
 let bonusText, bonusAmmount, bonusGivenTime;
 
@@ -23,8 +23,10 @@ let gameBottomTopText = undefined;
 let lives = undefined;
 let titleSize;
 var gameNewHiscoreStatus = undefined;
+var gameBestLevelTimeStatus = undefined;
 let gameBlinkFrames = 0;
 let cameraShake = vec2();
+let gameLastDiedOnLevel = undefined;
 
 let title;
 
@@ -61,6 +63,8 @@ function gameInit() {
 	title.setCollision(false, false, false);
 	title.gravityScale = 0;
 
+	gameLastDiedOnLevel = undefined;
+
 	gameBottomText = undefined;
 	gameBottomTopText = undefined;
 	gameBlinkFrames = 15;
@@ -94,9 +98,11 @@ function gameSetState(newState) {
 
 		case GameState.TRANSITION:
 			transitionFrames = TRANSITION_FRAMES;
-			gameBestLevelTimeStatus = SAVEFILE_UPDATE_STATUS.NUMBER_LOWER;
+			gameBestLevelTimeStatus = undefined;
 
-			if (level > 0) gameBestLevelTimeStatus = savefileTimeUpdate(level, timeLeft);
+			if (level > 0 && gameLastDiedOnLevel != level) {
+				gameBestLevelTimeStatus = savefileTimeUpdate(level, timeLeft);
+			}
 			break;
 
 		default:
@@ -331,7 +337,7 @@ function gameRenderPost() {
 						break;
 				}
 
-				gameDrawHudText(bestText, (overlayCanvas.width * 3) / 4, halfTile * 2, 0.7);
+				if (bestText) gameDrawHudText(bestText, (overlayCanvas.width * 3) / 4, halfTile * 2, 0.7);
 			}
 
 		// fall-thru !
