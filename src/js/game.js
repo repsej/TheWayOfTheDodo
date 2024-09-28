@@ -1,6 +1,6 @@
 /** @format */
 
-let spriteAtlas, score, level, transitionFrames, timeLeft;
+let spriteAtlas, score, level, transitionFrames, timeLeft, newBestTime;
 
 let bonusText, bonusAmmount, bonusGivenTime;
 
@@ -79,7 +79,7 @@ function gameSetState(newState) {
 			levelBuild(14);
 			musicInit(22);
 			new ConcreteBlock(vec2(levelSize.x / 2, levelSize.y * 4));
-			gameIsNewHiscore = savefileUpdateHiscore(score);
+			gameIsNewHiscore = savefileHiscoreUpdate(score);
 			break;
 
 		case GameState.WON:
@@ -94,6 +94,9 @@ function gameSetState(newState) {
 
 		case GameState.TRANSITION:
 			transitionFrames = TRANSITION_FRAMES;
+			newBestTime = false;
+
+			if (level > 0) newBestTime = savefileTimeUpdate(level, timeLeft);
 			break;
 
 		default:
@@ -125,7 +128,7 @@ function gameUpdate() {
 	switch (gameState) {
 		case GameState.WON:
 			if (gameBonusUpdate()) {
-				gameIsNewHiscore = savefileUpdateHiscore(score);
+				gameIsNewHiscore = savefileHiscoreUpdate(score);
 			}
 
 			VictoryRocket.spawnRandom();
@@ -312,12 +315,24 @@ function gameRenderPost() {
 
 	switch (gameState) {
 		case GameState.TRANSITION:
+			let bestTime = savefileTimeGet(level);
+			if (bestTime > 0) {
+				gameDrawHudText(
+					"Best " + bestTime.toFixed(2) + (newBestTime ? " NEW!" : ""),
+					(overlayCanvas.width * 3) / 4,
+					halfTile * 3,
+					0.7
+				);
+			}
+
+		// fall-thru !
+
 		case GameState.PLAY:
 			//gameDrawHudText(levelTexts[level], overlayCanvas.width * 0.5, overlayCanvas.height - halfTile);
 
 			if (level == 0) {
-				if (savefileGetHiscore())
-					gameDrawHudText("Hiscore " + savefileGetHiscore(), overlayCanvas.width * 0.5, halfTile);
+				if (savefileHiscoreGet())
+					gameDrawHudText("Hiscore " + savefileHiscoreGet(), overlayCanvas.width * 0.5, halfTile);
 
 				let subtitleTopPos = worldToScreen(vec2(levelSize.x / 2, levelSize.y * 0.45));
 				let subtitleBottomPos = worldToScreen(vec2(levelSize.x / 2, levelSize.y * 0.4));
@@ -411,8 +426,8 @@ function gameRenderPost() {
 
 function gameDrawScoreStuff(halfTile) {
 	let scoreText = "Score " + score;
-	if (savefileGetHiscore()) {
-		scoreText += "          Hiscore " + savefileGetHiscore();
+	if (savefileHiscoreGet()) {
+		scoreText += "          Hiscore " + savefileHiscoreGet();
 	}
 	gameDrawHudText(scoreText, overlayCanvas.width / 2, halfTile);
 	if (gameIsNewHiscore && (time * 2) % 2 > 1) gameDrawHudText("NEW HISCORE", overlayCanvas.width / 2, halfTile * 3, 2);

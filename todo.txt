@@ -1,7 +1,4 @@
 TODO:
- - Fix reported mobile issue.
- - Save (and show) best time per level
- 
 
 FUCK IT:
  - Mauritius in the background ??
@@ -9,6 +6,8 @@ FUCK IT:
 
 
 DONE:
+ - Save (and show) best time per level 
+ - Fix reported mobile issue.  NAH. Fuck that.  Jonas says it probably the fault of the hosting page.
  - Time bonus counting should wait longer before it starts counting
  - Change keys of songs ?  NOO ... sounds horrible !
  - Nicer bonus counter
