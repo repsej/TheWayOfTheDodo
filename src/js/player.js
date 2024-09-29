@@ -70,6 +70,11 @@ class Player extends EngineObject {
 		this.angleDamping = 0.9;
 		this.damping = 0.99;
 		this.doFlap = false;
+
+		if (this.mirror) {
+			this.velocity.x *= -1;
+			this.mirror = false;
+		}
 	}
 
 	update() {
