@@ -46,3 +46,15 @@ function savefileTimeGet(level) {
 function savefileTimeUpdate(level, time) {
 	return savefileUpdateNumber("dodo_level" + level, time);
 }
+
+function savefileSet(key, val) {
+	localStorage.setItem(key, JSON.stringify(val));
+}
+
+function savefileGet(key) {
+	return JSON.parse(localStorage.getItem(key));
+}
+
+function savefileExist(key) {
+	return localStorage.getItem(key) != null;
+}

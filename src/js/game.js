@@ -68,6 +68,8 @@ function gameInit() {
 	gameBottomText = undefined;
 	gameBottomTopText = undefined;
 	gameBlinkFrames = 15;
+
+	inputPlaybackDemo = false;
 }
 
 function gameSetState(newState) {
@@ -83,7 +85,9 @@ function gameSetState(newState) {
 			levelBuild(14);
 			musicInit(22);
 			new ConcreteBlock(vec2(levelSize.x / 2, levelSize.y * 4));
-			gameNewHiscoreStatus = savefileHiscoreUpdate(score);
+
+			if (!inputPlaybackDemo) gameNewHiscoreStatus = savefileHiscoreUpdate(score);
+
 			break;
 
 		case GameState.WON:
@@ -101,7 +105,10 @@ function gameSetState(newState) {
 			gameBestLevelTimeStatus = undefined;
 
 			if (level > 0 && gameLastDiedOnLevel != level) {
-				gameBestLevelTimeStatus = savefileTimeUpdate(level, timeLeft);
+				if (!inputPlaybackDemo) gameBestLevelTimeStatus = savefileTimeUpdate(level, timeLeft);
+				if (gameBestLevelTimeStatus == SAVEFILE_UPDATE_STATUS.NUMBER_HIGHER) {
+					inputSaveData();
+				}
 			}
 			break;
 
@@ -136,15 +143,15 @@ function gameUpdate() {
 	switch (gameState) {
 		case GameState.WON:
 			if (gameBonusUpdate()) {
-				gameNewHiscoreStatus = savefileHiscoreUpdate(score);
+				if (!inputPlaybackDemo) gameNewHiscoreStatus = savefileHiscoreUpdate(score);
 			}
 
 			VictoryRocket.spawnRandom();
 			cameraPos = cameraPos.lerp(player.pos, 0.05);
 			if (time - levelStartTime > 7) {
 				if (!gameBottomText) sound_exitAppear.play();
-				gameBottomText = "[Click to start new game]";
-				if (inputJumpReleased()) gameInit();
+				gameBottomText = "[Press jump to start new game]";
+				if (inputJumpReleased(true)) gameInit();
 			}
 			break;
 
@@ -153,8 +160,8 @@ function gameUpdate() {
 
 			if (time - levelStartTime > 5) {
 				if (!gameBottomText) sound_exitAppear.play();
-				gameBottomTopText = "[Click to start new game]";
-				if (inputJumpReleased()) gameInit();
+				gameBottomTopText = "[Press jump to start new game]";
+				if (inputJumpReleased(true)) gameInit();
 			}
 			cameraScale = min(mainCanvas.width / levelSize.x, mainCanvas.height / levelSize.y);
 			cameraPos = levelSize.scale(0.5);
@@ -192,7 +199,7 @@ function gameUpdate() {
 					}
 				}
 			} else {
-				if (inputJumpReleased()) {
+				if (inputJumpReleased(true) || inputPlaybackDemo) {
 					gameSkipToLevel(++level);
 				}
 			}
@@ -237,6 +244,13 @@ function gameUpdate() {
 		if (keyWasPressed("KeyK")) player.kill();
 		if (keyWasPressed("KeyN")) gameNextLevel();
 		if (keyWasPressed("KeyT")) levelStartTime = time - TIME_MAX - 1;
+
+		if (keyWasPressed("KeyD")) {
+			if (level == 0) {
+				gameNextLevel();
+				inputPlaybackDemo = true;
+			}
+		}
 	}
 
 	if (!IS_RELEASE || gameState == GameState.WON) {
@@ -431,9 +445,15 @@ function gameRenderPost() {
 	if (gameBottomTopText)
 		gameDrawHudText(gameBottomTopText, overlayCanvas.width * 0.5, overlayCanvas.height - halfTile * 3);
 
+	if (player) player.renderTop(); // On top of everything !
+
+	if (inputPlaybackDemo) {
+		gameDrawHudText("DEMO PLAYBACK", overlayCanvas.width / 2, overlayCanvas.height / 2, 2);
+	}
+
 	mainContext.drawImage(overlayCanvas, 0, 0);
 
-	if (player) player.renderTop(); // On top of everything !
+	// if (player) player.renderTop(); // On top of everything !
 
 	if (gameBlinkFrames > 0) {
 		gameBlinkFrames--;
@@ -451,15 +471,17 @@ function gameDrawScoreStuff(halfTile) {
 	}
 	gameDrawHudText(scoreText, overlayCanvas.width / 2, halfTile);
 
-	switch (gameNewHiscoreStatus) {
-		case SAVEFILE_UPDATE_STATUS.NUMBER_LOWER:
-			break;
-		case SAVEFILE_UPDATE_STATUS.NUMBER_SAME:
-			gameDrawHudText("HISCORE TIED", overlayCanvas.width / 2, halfTile * 3, 2);
-			break;
-		case SAVEFILE_UPDATE_STATUS.NUMBER_HIGHER:
-			if ((time * 2) % 2 > 1) gameDrawHudText("NEW HISCORE", overlayCanvas.width / 2, halfTile * 3, 2);
-			break;
+	if (!inputPlaybackDemo) {
+		switch (gameNewHiscoreStatus) {
+			case SAVEFILE_UPDATE_STATUS.NUMBER_LOWER:
+				break;
+			case SAVEFILE_UPDATE_STATUS.NUMBER_SAME:
+				gameDrawHudText("HISCORE TIED", overlayCanvas.width / 2, halfTile * 3, 2);
+				break;
+			case SAVEFILE_UPDATE_STATUS.NUMBER_HIGHER:
+				if ((time * 2) % 2 > 1) gameDrawHudText("NEW HISCORE", overlayCanvas.width / 2, halfTile * 3, 2);
+				break;
+		}
 	}
 
 	return scoreText;

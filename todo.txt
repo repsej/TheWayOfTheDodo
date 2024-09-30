@@ -1,4 +1,8 @@
 TODO:
+ - Click to stop DEMO playback and return to intro screen
+ - Spawn different door for demo playback
+ - Demo playback doesn't always work ! ... frame skipping in the engine !! ?
+ - Rounding error in record timings ? ... multiply by 100, round and store integers
 
 FUCK IT:
  - Mauritius in the background ??
@@ -6,6 +10,8 @@ FUCK IT:
 
 
 DONE:
+ - Show DEMO sign in playback
+ - No recording of new times and hiscores in playback
  - Save (and show) best time per level 
  - Fix reported mobile issue.  NAH. Fuck that.  Jonas says it probably the fault of the hosting page.
  - Time bonus counting should wait longer before it starts counting
