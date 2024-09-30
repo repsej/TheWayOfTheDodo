@@ -14,7 +14,7 @@ class Coin extends EngineObject {
 	update(o) {
 		//super.update(); // NO super update !
 
-		this.pos.y = this.yOrig + Math.sin(this.index / 5 + time * 15) / 15;
+		this.pos.y = this.yOrig + Math.sin(this.index / 5 + (time - levelStartTime) * 15) / 15;
 	}
 
 	collideWithObject(o) {

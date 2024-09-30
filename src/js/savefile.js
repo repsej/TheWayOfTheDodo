@@ -40,11 +40,13 @@ function savefileHiscoreUpdate(score) {
 }
 
 function savefileTimeGet(level) {
-	return savefileGetNumber("dodo_level" + level);
+	let i = savefileGetNumber("dodo_level" + level);
+
+	return i / 100;
 }
 
 function savefileTimeUpdate(level, time) {
-	return savefileUpdateNumber("dodo_level" + level, time);
+	return savefileUpdateNumber("dodo_level" + level, Math.round(time * 100));
 }
 
 function savefileSet(key, val) {

@@ -290,6 +290,9 @@ function gameSkipToLevel(newLevel) {
 	musicInit(level);
 	musicOn = true;
 
+	transitionFrames = 0;
+	bonusText = undefined;
+
 	gameSetState(GameState.PLAY);
 	inputReset();
 

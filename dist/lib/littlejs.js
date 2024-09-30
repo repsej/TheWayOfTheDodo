@@ -5064,9 +5064,9 @@ function engineInit(gameInit, gameUpdate, gameUpdatePost, gameRender, gameRender
         // if (debug) // +/- to speed/slow time
         //     frameTimeDeltaMS *= debugSpeedUp ? 5 : debugSpeedDown ? .2 : 1;
         timeReal += frameTimeDeltaMS / 1e3;
-        frameTimeBufferMS += paused ? 0 : frameTimeDeltaMS;
+        //frameTimeBufferMS += paused ? 0 : frameTimeDeltaMS;
 //        if (!debugSpeedUp)
-            frameTimeBufferMS = min(frameTimeBufferMS, 50); // clamp in case of slow framerate
+            //frameTimeBufferMS = min(frameTimeBufferMS, 50); // clamp in case of slow framerate
         updateCanvas();
 
         if (paused)
@@ -5080,16 +5080,16 @@ function engineInit(gameInit, gameUpdate, gameUpdatePost, gameRender, gameRender
         else
         {
             // apply time delta smoothing, improves smoothness of framerate in some browsers
-            let deltaSmooth = 0;
-            if (frameTimeBufferMS < 0 && frameTimeBufferMS > -9)
-            {
-                // force an update each frame if time is close enough (not just a fast refresh rate)
-                deltaSmooth = frameTimeBufferMS;
-                frameTimeBufferMS = 0;
-            }
+            // let deltaSmooth = 0;
+            // if (frameTimeBufferMS < 0 && frameTimeBufferMS > -9)
+            // {
+            //     // force an update each frame if time is close enough (not just a fast refresh rate)
+            //     deltaSmooth = frameTimeBufferMS;
+            //     frameTimeBufferMS = 0;
+            // }
             
             // update multiple frames if necessary in case of slow framerate
-            for (;frameTimeBufferMS >= 0; frameTimeBufferMS -= 1e3 / frameRate)
+            //for (;frameTimeBufferMS >= 0; frameTimeBufferMS -= 1e3 / frameRate)
             {
                 // increment frame and update time
                 time = frame++ / frameRate;
@@ -5106,7 +5106,7 @@ function engineInit(gameInit, gameUpdate, gameUpdatePost, gameRender, gameRender
             }
 
             // add the time smoothing back in
-            frameTimeBufferMS += deltaSmooth;
+            //frameTimeBufferMS += deltaSmooth;
         }
         
         // render sort then render while removing destroyed objects
