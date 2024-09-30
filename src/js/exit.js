@@ -15,7 +15,6 @@ class Exit extends EngineObject {
 	collideWithObject(o) {
 		if (o instanceof Player) {
 			if (o.pos.distanceSquared(this.pos) < 2) {
-
 				gameNextLevel();
 			}
 		}

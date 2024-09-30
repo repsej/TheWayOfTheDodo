@@ -22,8 +22,8 @@ let gameBottomText = undefined;
 let gameBottomTopText = undefined;
 let lives = undefined;
 let titleSize;
-var gameNewHiscoreStatus = undefined;
-var gameBestLevelTimeStatus = undefined;
+let gameNewHiscoreStatus = undefined;
+let gameBestLevelTimeStatus = undefined;
 let gameBlinkFrames = 0;
 let cameraShake = vec2();
 let gameLastDiedOnLevel = undefined;
@@ -129,6 +129,8 @@ function gameNextLevel() {
 }
 
 function gameUpdate() {
+	inputUpdateXXX();
+
 	musicUpdate();
 
 	switch (gameState) {
@@ -275,6 +277,7 @@ function gameSkipToLevel(newLevel) {
 	musicOn = true;
 
 	gameSetState(GameState.PLAY);
+	inputReset();
 
 	//playMusic();
 }

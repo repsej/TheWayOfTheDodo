@@ -1,10 +1,10 @@
 /** @format */
 
-var patterns = [[]];
+let patterns = [[]];
 
-var musicSongLength = 0;
+let musicSongLength = 0;
 
-var instrumentParamaters = [
+let instrumentParamaters = [
 	[1, 0, 43, 0.01, 0.5, 0.5, , 0.5], // 0 bass
 	[20, 0, 170, 0.003, , 0.008, , 0.97, -35, 53, , , , , , 0.1], // 1 bass drum
 	[0.8, 0, 270, , , 0.12, 3, 1.65, -2, , , , , 4.5, , 0.02], // 2 snare
@@ -12,9 +12,9 @@ var instrumentParamaters = [
 	[2, , 400, , , 0.5, 2, 0.1, , 1, , , , 2.5, , 0.5, , 0.5, 0.1], // 4 crash
 ];
 
-var instrumentList = [];
+let instrumentList = [];
 
-var songData = [
+let songData = [
 	instrumentList,
 	patterns, // patterns
 	[1], // sequence (NOT USED)
@@ -22,7 +22,7 @@ var songData = [
 ];
 
 function unfoldPattern(instrument, pan, startnode, pattern, starts) {
-	var nodes = [];
+	let nodes = [];
 	nodes.push(instrument);
 	nodes.push(pan);
 
@@ -238,10 +238,10 @@ function createMusic(level) {
 	patterns[0].push(unfoldPattern(2, 0.1, 7, snarePattern, snareStarts));
 }
 
-var vol = 0.2;
-var musicOn = true;
+let vol = 0.2;
+let musicOn = true;
 
-var musicStartTime = 0;
+let musicStartTime = 0;
 
 function musicInit(level) {
 	createMusic(level);
