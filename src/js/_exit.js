@@ -12,10 +12,14 @@ class Exit extends EngineObject {
 		makeDebris(this.pos, new Color(1, 1, 1), 25, 0.1, 0.1, 0.05);
 	}
 
+	onActivated() {
+		gameNextLevel();
+	}
+
 	collideWithObject(o) {
 		if (o instanceof Player) {
 			if (o.pos.distanceSquared(this.pos) < 2) {
-				gameNextLevel();
+				this.onActivated();
 			}
 		}
 		return false;

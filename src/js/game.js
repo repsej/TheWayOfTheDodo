@@ -40,6 +40,7 @@ function gameInit() {
 		playerJump: tile(4),
 		exit: tile(6),
 		concreteBlock: tile(9),
+		demoDoor: tile(10),
 		title: tile(vec2(48, 32), vec2(48, 32)),
 	};
 

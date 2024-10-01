@@ -72,6 +72,7 @@ const tileType_spike = 2;
 
 let player, playerStartPos, tileData, tileLayers, sky;
 let exitStartPos = undefined;
+let demoDoorStartPos = undefined;
 let exit = undefined;
 let levelSize;
 let levelStartTime = -1;
@@ -86,6 +87,7 @@ function levelBuild(level) {
 	Coin.count = 0;
 
 	exitStartPos = undefined;
+	demoDoorStartPos = undefined;
 	exit = undefined;
 
 	playerStartPos = undefined;
@@ -122,6 +124,7 @@ function levelLoad(levelNumber) {
 		exit: 7,
 		spike: 8,
 		steel: 9,
+		demoDoor: 11,
 	};
 
 	// set all level data tiles
@@ -156,6 +159,10 @@ function levelLoad(levelNumber) {
 					exitStartPos = objectPos;
 					continue;
 
+				case tileLookup.demoDoor:
+					demoDoorStartPos = objectPos;
+					continue;
+
 				case tileLookup.spike:
 					levelSetTileData(pos, 0, tile);
 					setTileCollisionData(pos, tileType_spike);
@@ -184,4 +191,6 @@ function levelLoad(levelNumber) {
 function levelShowExit() {
 	if (exit) return;
 	exit = new Exit(exitStartPos);
+
+	if (demoDoorStartPos) new DemoDoor(demoDoorStartPos);
 }
