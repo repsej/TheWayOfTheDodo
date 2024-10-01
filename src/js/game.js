@@ -94,7 +94,7 @@ function gameSetState(newState) {
 			gameSkipToLevel(13);
 			level = 31;
 			musicInit(level);
-			musicOn = true;
+			// musicOn = true;
 			levelStartTime = time;
 
 			gameBonusSet("Lives bonus ", lives * LIVE_BONUS_SCORE, 2);
@@ -218,7 +218,7 @@ function gameUpdate() {
 			if (level == 0) {
 				//gameBottomText = levelTexts[level];
 				//gameBottomText = "Dodo Dojo: 13 chambers of fowl play";
-				gameBottomText = isTouchDevice ? "[Tap to jump]" : "[Space to jump]";
+				gameBottomText = isTouchDevice ? "[Tap to jump - hold for wall jump]" : "[Space to jump - hold for wall jump]";
 
 				timeLeft = 0;
 			} else {
@@ -231,20 +231,33 @@ function gameUpdate() {
 	}
 
 	if (!IS_RELEASE) {
+		// Toggle music on
+		if (keyWasPressed("KeyM")) {
+			musicOn = !musicOn;
+		}
+
+		// GAME OVER
 		if (keyWasPressed("KeyG")) {
 			lives = 1;
 			player?.kill();
 		}
 
+		// WIN
 		if (keyWasPressed("KeyW")) {
 			level = 13;
 			gameNextLevel();
 		}
 
+		// KILL
 		if (keyWasPressed("KeyK")) player.kill();
+
+		// Next level
 		if (keyWasPressed("KeyN")) gameNextLevel();
+
+		// 1 sec to time out
 		if (keyWasPressed("KeyT")) levelStartTime = time - TIME_MAX - 1;
 
+		// Start demo
 		if (keyWasPressed("KeyD")) {
 			if (level == 0) {
 				gameNextLevel();
@@ -288,7 +301,7 @@ function gameSkipToLevel(newLevel) {
 	level = mod(newLevel, levelData.length);
 	levelBuild(level);
 	musicInit(level);
-	musicOn = true;
+	//musicOn = true;
 
 	transitionFrames = 0;
 	bonusText = undefined;
