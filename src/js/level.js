@@ -192,5 +192,5 @@ function levelShowExit() {
 	if (exit) return;
 	exit = new Exit(exitStartPos);
 
-	if (demoDoorStartPos) new DemoDoor(demoDoorStartPos);
+	if (demoDoorStartPos && inputPlaybackDemoReady()) new DemoDoor(demoDoorStartPos);
 }

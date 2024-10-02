@@ -189,18 +189,22 @@ function gameUpdate() {
 				transitionFrames--;
 
 				if (transitionFrames <= 0) {
-					bonusText = undefined;
-
-					if (!gameBottomTopText) sound_exitAppear.play();
-					gameBottomTopText = "[Click to continue]";
-
-					if (level == 0) {
-						score = 0;
+					if (inputPlaybackDemo) {
 						gameSkipToLevel(++level);
+					} else {
+						bonusText = undefined;
+
+						if (!gameBottomTopText) sound_exitAppear.play();
+						gameBottomTopText = "[Jump to continue]";
+
+						if (level == 0) {
+							score = 0;
+							gameSkipToLevel(++level);
+						}
 					}
 				}
 			} else {
-				if (inputJumpReleased(true) || inputPlaybackDemo) {
+				if (inputJumpReleased(true)) {
 					gameSkipToLevel(++level);
 				}
 			}
@@ -229,6 +233,12 @@ function gameUpdate() {
 			cameraScale = min(mainCanvas.width / levelSize.x, mainCanvas.height / levelSize.y);
 			cameraPos = levelSize.scale(0.5);
 			break;
+	}
+
+	// quit demo playback
+	if (inputPlaybackDemo && inputJumpReleased(true)) {
+		gameInit();
+		return;
 	}
 
 	if (!IS_RELEASE) {
@@ -444,7 +454,8 @@ function gameRenderPost() {
 			if (bonusText && time - bonusGivenTime > -1 && gameNewHiscoreStatus == undefined)
 				gameDrawHudText(bonusText + bonusAmmount, overlayCanvas.width / 2, halfTile * 3, 0.7);
 
-			gameDrawHudText("BE FREE BIRD !", overlayCanvas.width / 2, overlayCanvas.height * 0.85, 3);
+			gameDrawHudText("FREEBIRD", overlayCanvas.width / 2, overlayCanvas.height - halfTile * 8, 4);
+			gameDrawHudText("YOU TAEK-WON-DODO", overlayCanvas.width / 2, overlayCanvas.height - halfTile * 5, 2);
 
 			if (!isTouchDevice) {
 				gameDrawHudText(
@@ -465,7 +476,8 @@ function gameRenderPost() {
 	if (player) player.renderTop(); // On top of everything !
 
 	if (inputPlaybackDemo) {
-		gameDrawHudText("DEMO PLAYBACK", overlayCanvas.width / 2, overlayCanvas.height / 2, 2);
+		gameDrawHudText("DEMO PLAYBACK", overlayCanvas.width / 4, overlayCanvas.height - halfTile);
+		gameDrawHudText("[Jump to quit]", (overlayCanvas.width * 3) / 4, overlayCanvas.height - halfTile);
 	}
 
 	mainContext.drawImage(overlayCanvas, 0, 0);

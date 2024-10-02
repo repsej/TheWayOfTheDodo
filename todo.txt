@@ -1,8 +1,6 @@
 TODO:
- - Click to stop DEMO playback and return to intro screen
- - Spawn different door for demo playback
- - Demo playback doesn't always work ! ... frame skipping in the engine !! ?
- - Rounding error in record timings ? ... multiply by 100, round and store integers
+ - Show how much faster a time is when a record is broken.
+ - Show fastest time while playing ?  Or just after a level is completed ?
 
 FUCK IT:
  - Mauritius in the background ??
@@ -10,6 +8,10 @@ FUCK IT:
 
 
 DONE:
+ - Click to stop DEMO playback and return to intro screen
+ - Spawn different door for demo playback
+ - Demo playback doesn't always work ! ... frame skipping in the engine !! ?  No, it was the coins bopping that was different.
+ - Rounding error in record timings ? ... multiply by 100, round and store integers
  - Show DEMO sign in playback
  - No recording of new times and hiscores in playback
  - Save (and show) best time per level 

@@ -39,6 +39,14 @@ function inputReset() {
 	}
 }
 
+function inputPlaybackDemoReady() {
+	for (let i = 1; i <= 13; i++) {
+		if (!savefileExist("jumpData_" + i)) return false;
+	}
+
+	return true;
+}
+
 function inputReadRealJumpInput() {
 	let space = inputData[0]["Space"];
 	let gamepadButton = inputData[1] && inputData[1][0];
