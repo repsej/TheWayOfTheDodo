@@ -475,8 +475,11 @@ function gameRenderPost() {
 	if (player) player.renderTop(); // On top of everything !
 
 	if (inputPlaybackDemo) {
-		gameDrawHudText("DEMO PLAYBACK", overlayCanvas.width / 4, overlayCanvas.height - halfTile);
-		gameDrawHudText("[Jump to quit]", (overlayCanvas.width * 3) / 4, overlayCanvas.height - halfTile);
+		if ((time * 2) % 2 > 1) {
+			gameDrawHudText("DEMO PLAYBACK", overlayCanvas.width / 4, overlayCanvas.height - halfTile);
+		} else {
+			gameDrawHudText("[Jump to quit]", (overlayCanvas.width * 3) / 4, overlayCanvas.height - halfTile);
+		}
 	}
 
 	mainContext.drawImage(overlayCanvas, 0, 0);
