@@ -110,7 +110,7 @@ function gameSetState(newState) {
 	}
 }
 
-function gameNextLevel(skipCheckBestTime = false) {
+function gameNextLevel(checkBestTime = false) {
 	if (transitionFrames > 0) return;
 
 	sound_exit.play(player.pos, 3);
@@ -123,8 +123,8 @@ function gameNextLevel(skipCheckBestTime = false) {
 
 	gameBestLevelTimeStatus = undefined;
 
-	if (!skipCheckBestTime) {
-		if (level > 0 && gameLastDiedOnLevel != level && !inputPlaybackDemo) {
+	if (checkBestTime && !inputPlaybackDemo) {
+		if (level > 0 && gameLastDiedOnLevel != level) {
 			gameBestLevelTimeStatus = savefileTimeUpdate(level, timeLeft);
 			if (gameBestLevelTimeStatus == SAVEFILE_UPDATE_STATUS.NUMBER_HIGHER) {
 				inputSaveData();
@@ -255,14 +255,14 @@ function gameUpdate() {
 		// WIN
 		if (keyWasPressed("KeyW")) {
 			level = 13;
-			gameNextLevel(true);
+			gameNextLevel();
 		}
 
 		// KILL
 		if (keyWasPressed("KeyK")) player.kill();
 
 		// Next level
-		if (keyWasPressed("KeyN")) gameNextLevel(true);
+		if (keyWasPressed("KeyN")) gameNextLevel();
 
 		// 1 sec to time out
 		if (keyWasPressed("KeyT")) levelStartTime = time - TIME_MAX - 1;
@@ -270,7 +270,7 @@ function gameUpdate() {
 		// Start demo
 		if (keyWasPressed("KeyD")) {
 			if (level == 0) {
-				gameNextLevel(true);
+				gameNextLevel();
 				inputPlaybackDemo = true;
 			}
 		}

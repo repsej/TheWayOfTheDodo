@@ -7,7 +7,7 @@ class DemoDoor extends Exit {
 	}
 
 	onActivated() {
-		gameNextLevel(true);
+		gameNextLevel();
 		inputPlaybackDemo = true;
 	}
 }

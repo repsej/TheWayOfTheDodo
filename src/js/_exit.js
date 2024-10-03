@@ -13,7 +13,7 @@ class Exit extends EngineObject {
 	}
 
 	onActivated() {
-		gameNextLevel();
+		gameNextLevel(true);
 	}
 
 	collideWithObject(o) {
