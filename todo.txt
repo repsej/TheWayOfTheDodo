@@ -1,6 +1,6 @@
 TODO:
  - Show how much faster a time is when a record is broken.
- - Show fastest time while playing ?  Or just after a level is completed ?
+ - Show fastest time when a level is completed
 
 FUCK IT:
  - Mauritius in the background ??
