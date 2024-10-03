@@ -220,9 +220,9 @@ function gameUpdate() {
 			timeLeft = max(timeLeft, 0);
 
 			if (level == 0) {
-				//gameBottomText = levelTexts[level];
-				//gameBottomText = "Dodo Dojo: 13 chambers of fowl play";
-				gameBottomText = isTouchDevice ? "[Tap to jump - hold for wall jump]" : "[Space to jump - hold for wall jump]";
+				gameBottomText = isTouchDevice
+					? "[Tap to jump.  Hold for wall jump.]"
+					: "[Space to jump.  Hold for wall jump.]";
 
 				timeLeft = 0;
 			} else {
@@ -235,7 +235,7 @@ function gameUpdate() {
 	}
 
 	// quit demo playback
-	if (inputPlaybackDemo && inputJumpReleased(true)) {
+	if (inputPlaybackDemo && inputJumpPressed(true)) {
 		gameInit();
 		return;
 	}
@@ -274,6 +274,9 @@ function gameUpdate() {
 				inputPlaybackDemo = true;
 			}
 		}
+
+		// Retry level
+		if (keyWasPressed("KeyR")) gameSkipToLevel(level);
 	}
 
 	if (!IS_RELEASE || gameState == GameState.WON) {

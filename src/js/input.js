@@ -14,7 +14,12 @@ function inputJumpHeld() {
 	return inputJump & 1;
 }
 
-function inputJumpPressed() {
+function inputJumpPressed(forceRealInput = false) {
+	if (forceRealInput) {
+		let realInput = inputReadRealJumpInput();
+		return realInput == 3;
+	}
+
 	return inputJump == 3;
 }
 
