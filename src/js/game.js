@@ -71,6 +71,8 @@ function gameInit() {
 	gameBlinkFrames = 15;
 
 	inputPlaybackDemo = false;
+
+	if (isTouchDevice) particleEmitRateScale = 0.3;
 }
 
 function gameSetState(newState) {
