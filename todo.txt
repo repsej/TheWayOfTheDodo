@@ -1,5 +1,5 @@
 TODO:
- - Revert to full little.js.  Should fix touch input on itch.io and get WebGL rendering back (to fix bad fps on phones)
+ - Less cut off from sprites ... looks silly
  - Show how much faster a time is when a record is broken.
  - Show fastest time when a level is completed
 
@@ -10,6 +10,7 @@ FUCK IT:
 
 
 DONE:
+ - Revert to full little.js.  Should fix touch input on itch.io and get WebGL rendering back (to fix bad fps on phones)
  - Scale down number of particles on mobiles
  - Click to stop DEMO playback and return to intro screen
  - Spawn different door for demo playback
