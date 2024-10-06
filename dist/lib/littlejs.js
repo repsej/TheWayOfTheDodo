@@ -18,13 +18,13 @@
  *  @type {Boolean}
  *  @default
  *  @memberof Debug */
-const debug = true;
+const debug = false;
 
 /** True if asserts are enaled
  *  @type {Boolean}
  *  @default
  *  @memberof Debug */
-const enableAsserts = true;
+const enableAsserts = false;
 
 /** Size to render debug points by default
  *  @type {Number}
@@ -36,7 +36,7 @@ const debugPointSize = .5;
  *  @type {Boolean}
  *  @default
  *  @memberof Debug */
-let showWatermark = true;
+let showWatermark = false;
 
 /** Key code used to toggle debug mode, Esc by default
  *  @type {String}

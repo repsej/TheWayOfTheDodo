@@ -23,7 +23,7 @@ let gameBottomTopText = undefined;
 let lives = undefined;
 let titleSize;
 let gameNewHiscoreStatus = undefined;
-let gameBestLevelTimeStatus = undefined;
+let gameBestTimeBonusDiff = undefined;
 let gameBlinkFrames = 0;
 let cameraShake = vec2();
 let gameLastDiedOnLevel = undefined;
@@ -121,14 +121,16 @@ function gameNextLevel(checkBestTime = false) {
 	gameBlinkFrames = 10;
 	gameCameraShake();
 
-	gameBonusSet("Time bonus ", Math.round(timeLeft * TIME_BONUS_SCORE), 2);
+	let timeBonus = Math.round(timeLeft * TIME_BONUS_SCORE);
 
-	gameBestLevelTimeStatus = undefined;
+	gameBonusSet("Time bonus ", timeBonus, 2);
+
+	gameBestTimeBonusDiff = undefined;
 
 	if (checkBestTime && !inputPlaybackDemo) {
 		if (level > 0 && gameLastDiedOnLevel != level) {
-			gameBestLevelTimeStatus = savefileTimeUpdate(level, timeLeft);
-			if (gameBestLevelTimeStatus == SAVEFILE_UPDATE_STATUS.NUMBER_HIGHER) {
+			gameBestTimeBonusDiff = savefileTimeBonusUpdate(level, timeBonus);
+			if (gameBestTimeBonusDiff > 0) {
 				inputSaveData();
 			}
 		}
@@ -375,16 +377,22 @@ function gameRenderPost() {
 			if (bestTime > 0) {
 				let bestText = undefined;
 
-				switch (gameBestLevelTimeStatus) {
-					case SAVEFILE_UPDATE_STATUS.NUMBER_LOWER:
-						bestText = "Best -" + (bestTime - timeLeft).toFixed(2);
-						break;
-					case SAVEFILE_UPDATE_STATUS.NUMBER_SAME:
+				console.log("best, diff: ", bestTime, gameBestTimeBonusDiff);
+
+				if (gameBestTimeBonusDiff != undefined) {
+					// let bonusDiffAsTime =
+					// 	Math.floor(Math.abs(gameBestTimeBonusDiff) / 100) + "." + (Math.abs(gameBestTimeBonusDiff) % 100);
+
+					let bonusDiffAsTime = Math.abs(gameBestTimeBonusDiff).toString().padStart(4, "0");
+					bonusDiffAsTime = bonusDiffAsTime.slice(0, 2) + "." + bonusDiffAsTime.slice(2);
+
+					if (gameBestTimeBonusDiff == 0) {
 						bestText = "Best tied";
-						break;
-					case SAVEFILE_UPDATE_STATUS.NUMBER_HIGHER:
-						bestText = (time * 2) % 2 > 1 ? "NEW BEST !" : "";
-						break;
+					} else if (gameBestTimeBonusDiff > 0) {
+						bestText = (time * 2) % 2 > 1 ? "NEW BEST +" + bonusDiffAsTime : "";
+					} else {
+						bestText = "Best -" + bonusDiffAsTime;
+					}
 				}
 
 				if (bestText) gameDrawHudText(bestText, (overlayCanvas.width * 3) / 4, halfTile * 2, 0.7);
@@ -507,16 +515,11 @@ function gameDrawScoreStuff(halfTile) {
 	}
 	gameDrawHudText(scoreText, overlayCanvas.width / 2, halfTile);
 
-	if (!inputPlaybackDemo) {
-		switch (gameNewHiscoreStatus) {
-			case SAVEFILE_UPDATE_STATUS.NUMBER_LOWER:
-				break;
-			case SAVEFILE_UPDATE_STATUS.NUMBER_SAME:
-				gameDrawHudText("HISCORE TIED", overlayCanvas.width / 2, halfTile * 3, 2);
-				break;
-			case SAVEFILE_UPDATE_STATUS.NUMBER_HIGHER:
-				if ((time * 2) % 2 > 1) gameDrawHudText("NEW HISCORE", overlayCanvas.width / 2, halfTile * 3, 2);
-				break;
+	if (!inputPlaybackDemo && gameNewHiscoreStatus >= 0) {
+		if (gameNewHiscoreStatus == 0) {
+			gameDrawHudText("HISCORE TIED", overlayCanvas.width / 2, halfTile * 3, 2);
+		} else if (gameBestTimeBonusDiff > 0) {
+			if ((time * 2) % 2 > 1) gameDrawHudText("NEW HISCORE", overlayCanvas.width / 2, halfTile * 3, 2);
 		}
 	}
 

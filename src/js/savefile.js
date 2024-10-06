@@ -1,10 +1,10 @@
 /** @format */
 
-let SAVEFILE_UPDATE_STATUS = {
-	NUMBER_LOWER: -1,
-	NUMBER_SAME: 0,
-	NUMBER_HIGHER: 1,
-};
+// let SAVEFILE_UPDATE_STATUS = {
+// 	NUMBER_LOWER: -1,
+// 	NUMBER_SAME: 0,
+// 	NUMBER_HIGHER: 1,
+// };
 
 function savefileGetNumber(key, defaultValue = 0.0) {
 	let retVal = localStorage.getItem(key);
@@ -16,18 +16,19 @@ function savefileGetNumber(key, defaultValue = 0.0) {
 	}
 }
 
+// Returns the diff
 function savefileUpdateNumber(key, value, defaultValue = 0.0) {
 	let diff = value - savefileGetNumber(key, defaultValue);
 
 	if (Math.abs(diff) < 0.001) {
-		return SAVEFILE_UPDATE_STATUS.NUMBER_SAME;
+		return 0;
 	}
 
 	if (diff > 0) {
 		localStorage.setItem(key, value);
-		return SAVEFILE_UPDATE_STATUS.NUMBER_HIGHER;
+		return diff;
 	} else {
-		return SAVEFILE_UPDATE_STATUS.NUMBER_LOWER;
+		return diff;
 	}
 }
 
@@ -40,13 +41,11 @@ function savefileHiscoreUpdate(score) {
 }
 
 function savefileTimeGet(level) {
-	let i = savefileGetNumber("dodo_level" + level);
-
-	return i / 100;
+	return savefileGetNumber("dodo_level" + level);
 }
 
-function savefileTimeUpdate(level, time) {
-	return savefileUpdateNumber("dodo_level" + level, Math.round(time * 100));
+function savefileTimeBonusUpdate(level, time) {
+	return savefileUpdateNumber("dodo_level" + level, time);
 }
 
 function savefileSet(key, val) {
