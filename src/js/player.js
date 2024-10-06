@@ -53,7 +53,7 @@ class Player extends EngineObject {
 		let smokeXoffset = 0.45;
 		let jumpSpot = this.pos.add(vec2(this.mirror ? smokeXoffset : -smokeXoffset, -0.45));
 
-		makeSmoke(jumpSpot, 3);
+		makeSmoke(jumpSpot, 2);
 	}
 
 	jumpToNextLevel() {

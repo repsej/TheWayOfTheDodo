@@ -118,32 +118,34 @@ function makeCollectEffect(pos, force = 1) {
 }
 
 function makeSmoke(pos, force = 1) {
+	console.log("Smoke", pos, force);
+
 	// smoke
 	new ParticleEmitter(
 		pos, // pos
 		0, // angle
-		0.2 * force, // radius / 2, // emitSize
-		0.3, // emitTime
-		rand(50, 150) * force, // emitRate
-		PI, // emiteCone
+		0, // 0.1 * force, // radius / 2, // emitSize
+		0.2, // emitTime
+		rand(10, 20) * (force + 0.2), // emitRate
+		PI / 2, // emiteCone
 		spriteAtlas.blob,
+		rgb(1, 1, 1, 1),
+		rgb(0.5, 0.5, 0.5, 0.5),
 		rgb(1, 1, 1),
-		rgb(0.5, 0.5, 0.5),
 		rgb(1, 1, 1),
-		rgb(1, 1, 1),
-		0.3, // time
-		0.3, // sizeStart
+		0.4, // time
+		0.3 + 0.1 * force, // sizeStart
 		0.05, // sizeEnd
-		0.01 / 10, // speed
+		force * 0.0005, // speed
 		0.1, // angleSpeed
-		0.9, // damp
+		0.85, // damp
 		0.9, // angleDamp
 		-0.1, // gravity
 		PI, // particle cone
 		0.5, // fade
-		0.5, // randomness
+		0.75, // randomness
 		false, // collide
-		false, // additive
+		true, // additive
 		true, // colorLinear
 		0 // renderOrder
 	);
