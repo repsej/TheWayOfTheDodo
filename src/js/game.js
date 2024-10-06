@@ -72,7 +72,7 @@ function gameInit() {
 
 	inputPlaybackDemo = false;
 
-	if (isTouchDevice) particleEmitRateScale = 0.3;
+	if (isTouchDevice) particleEmitRateScale = 0.5;
 }
 
 function gameSetState(newState) {
