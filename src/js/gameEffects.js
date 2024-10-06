@@ -118,8 +118,6 @@ function makeCollectEffect(pos, force = 1) {
 }
 
 function makeSmoke(pos, force = 1) {
-	console.log("Smoke", pos, force);
-
 	// smoke
 	new ParticleEmitter(
 		pos, // pos
