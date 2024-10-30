@@ -1,7 +1,7 @@
 #!/bin/bash
 
-rm -rf ziptest/
-mkdir ziptest/
-cd ziptest/
+rm -rf docs/
+mkdir docs/
+cd docs/
 unzip ../dist/a.zip
 http-server
