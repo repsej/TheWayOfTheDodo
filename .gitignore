@@ -4,7 +4,6 @@
 #     https://www.atlassian.com/git/tutorials/saving-changes/gitignore
 
 # Project Customizations
-ziptest/*
 dist/*
 !/dist/lib
 src/js/*_GEN.js
